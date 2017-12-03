@@ -1,0 +1,27 @@
+{
+  "name": "spmit",
+  "version": "1.0.0",
+  "description": ";)",
+  "main": "index.js",
+  "scripts": {
+    "test": "elo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Wint1993"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "blazej",
+  "license": "ISC",
+  "dependencies": {
+    "@lordfriend/nya-bootstrap-select": "^2.4.0",
+    "angular-messages": "^1.6.6",
+    "angular-sanitize": "^1.6.6",
+    "angular-utils-pagination": "^0.11.1",
+    "angularjs": "0.0.1",
+    "ng-material-datetimepicker": "^1.9.6",
+    "ui-select": "^0.19.8"
+  }
+}

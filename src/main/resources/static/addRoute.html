@@ -1,0 +1,145 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+
+    <script src="https://unpkg.com/ng-material-datetimepicker@1.9.6/dist/angular-material-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/ng-material-datetimepicker@1.9.6/dist/angular-material-datetimepicker.min.js.map"></script>
+    <link href="https://unpkg.com/ng-material-datetimepicker@1.9.6/dist/material-datetimepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script>
+
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .dtp table.dtp-picker-days tr > td > a.selected,
+    .dtp table.dtp-picker-days tr > td > a.selected.hilite,
+    .dtp div.dtp-date, .dtp div.dtp-time, .dtp .dtp-hand.on,
+    .dtp .dtp-actual-meridien a.selected,
+    .dtp .dtp-picker-time > a.dtp-select-hour.selected {
+        background: #2abab9;
+    }
+
+    .dtp table.dtp-picker-days tr > td > a.hilite:not(.selected),
+    .dtp div.dtp-actual-time.p60 span.selected {
+        color: #2abab9;
+    }
+
+    .dtp div.dtp-year-btn, .dtp div.dtp-actual-year, .dtp div.dtp-actual-maxtime {
+        color: #d0f0f0;
+    }
+
+    .dtp > .dtp-content > .dtp-date-view > header.dtp-header {
+        background: #009796;
+    }
+
+    md-backdrop{
+        position: fixed;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+    }
+</style>
+
+
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a class="active" ng-href="/#!/routes">Route</a></li>
+        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a href="/#!/user">Users</a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+<div class="col-xs-8">
+
+    <p> </p>
+    <p> </p>
+    <p> </p>
+
+    <label> Warehouse Start:</label>
+    <select ng-model="credentials.warehouseStart">
+        <option ng-selected="credentials.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouse" >{{x.name}}</option>
+    </select>
+    <p> </p>
+
+    <label> Warehouse End:</label>
+    <select ng-model="credentials.warehouseEnd">
+        <option ng-selected="credentials.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouse" >{{x.name}}</option>
+    </select>
+    <p> </p>
+
+    <label> Description:</label>
+    <input type="text" placeholder="Enter route description" required autofocus ng-model="credentials.description">
+    <p> </p>
+
+    <label> Transport:</label>
+    <select ng-model="credentials.transport">
+        <option ng-selected="credentials.transport == x" ng-value="x" ng-repeat="x in transport" >{{x.transportName}}</option>
+    </select>
+
+    <p> </p>
+    <input mdc-datetime-picker="" date="true" time="true" id="datetime" placeholder="Date"
+           show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="dateTime"
+           class=" dtp-no-msclear dtp-input md-input" type="text">
+
+    <div flex-xs flex="50">
+        <md-checkbox aria-label="Select All"
+                     ng-checked="isChecked()"
+                     md-indeterminate="isIndeterminate()"
+                     ng-click="toggleAll()">
+            <span ng-if="isChecked()">Un-</span>Select All
+        </md-checkbox>
+    </div>
+    <div class="demo-select-all-checkboxes" ng-model="credentials.packages" flex="100" ng-repeat="item in packages">
+        <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
+            {{ item.name }}    <p> </p>
+            {{ item.user.firstName }}    {{ item.user.lastName }}
+        </md-checkbox>
+    </div>
+    <div flex="100">
+        <h2 class="md-title">Selected Items</h2>
+        <code style="display: block; padding: 8px;">{{selected | json}}</code>
+    </div>
+
+
+    <div class = "panel panel-default">
+        <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
+        <a ng-href="/#!/route" class="btn btn-warning">Cancel</a></div>
+
+
+</div>
+

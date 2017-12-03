@@ -1,0 +1,104 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+    }
+</style>
+
+
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a ng-href="/#!/route">Route</a></li>
+        <li><a class="active" ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a href="/#!/user">Users</a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+<div class="col-xs-8">
+
+    <p> </p>
+    <p> </p>
+    <p> </p>
+    <label> Driver Transport Name:</label>
+    <input type="text" placeholder="Enter transport name" required autofocus ng-model="credentials.transportName">
+    <p> </p>
+
+
+    <label> Driver First Name:</label>
+    <input type="text" placeholder="Enter driver first name" required autofocus ng-model="credentials.driverFirstName">
+    <p> </p>
+
+    <label> Drive Last Name:</label>
+    <input type="text" placeholder="Enter driver last name" required autofocus ng-model="credentials.driverLastName">
+    <p> </p>
+
+    <label> Contact number:</label>
+    <input type="text" placeholder="Enter driver telephone number" required autofocus ng-model="credentials.driverTelephoneName">
+    <p> </p>
+
+    <label> Max weight:</label>
+    <input type="email" placeholder="Enter car max weight" required autofocus ng-model="credentials.email">
+    <p> </p>
+
+    <label> Max capacity:</label>
+    <input type="email" placeholder="Enter car max capacity" required autofocus ng-model="credentials.email">
+    <p> </p>
+
+    <label> Width dimension [m^3]:</label>
+    <input type="text" placeholder="Enter car width"  ng-model="credentials.xDimension" >
+    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Width" data-html="true" data-content="<img src='/picture/width.png' width='200' />">?</button>
+    <p> </p>
+    <label> Length dimension [m^3]:</label>
+    <input type="text" placeholder="Enter car length" ng-model="credentials.yDimension" >
+    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Length" data-html="true" data-content="<img src='/picture/length.png' width='200' />">?</button>
+
+    <p> </p>
+    <label> Height dimension [m^3]:</label>
+    <input type="text" placeholder="Enter car height" ng-model="credentials.zDimension" >
+    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
+
+
+    <div class = "panel panel-default">
+        <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
+        <a ng-href="/#!/transport" class="btn btn-warning">Cancel</a></div>
+
+
+</div>
+

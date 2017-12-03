@@ -1,0 +1,136 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+    }
+</style>
+
+
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a class="active" ng-href="/#!/routes">Route</a></li>
+        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a href="/#!/user">Users</a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+<div class="col-xs-8">
+    <form class="form-inline">
+        <div class="form-group">
+            <label > <img  src="picture/unnamed.png" alt="Lupa" style="width:33px;height:33px;"> </label>
+            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+        </div>
+    </form>
+    <p></p>
+
+    <table class="table table-condensed table-bordered table-striped">
+        <thead>
+        <tr>
+            <th ng-click="sort('warehouseStart.name')">Route start <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='warehouseStart.name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('warehouseEnd.name')">Route end <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='warehouseEnd.name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('transport.transportName')">Transport <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='transport.transportName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('description')">Description<img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='description'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th >Data start
+            </th>
+            <th >Data end
+            </th>
+            <th title="'Action buttons'" >Action buttons
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr dir-paginate="route in transfer|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage">
+            <td title="'Route start'" >
+                {{route.warehouseStart.name}}</td>
+            <td title="'Route end'" >
+                {{route.warehouseEnd.name}}    </td>
+            <td title="'Transport'" >
+                {{route.transport.transportName}}    </td>
+            <td title="'Description'" >
+                {{route.description}}    </td>
+            <td title="'Data start'" >
+                {{route.startRoute}}    </td>
+            <td title="'Data end'" >
+                {{route.endRoute}}    </td>
+            <td title="'Action buttons'" >
+                <a ng-click="edit(route)" class="btn btn-primary btn-sm">Edit</a>
+                <a ng-click="deleteRoute(route)" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+
+    <div >
+        <label for="search">Routes per page:</label>
+        <!--<input type="number" min="1" step="10" max="50" class="form-control" ng-model="pageSize"> -->
+
+        <select ng-model="pageSize">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+
+    <dir-pagination-controls
+            max-size="5"
+            direction-links="true"
+            boundary-links="true" >
+    </dir-pagination-controls>
+
+    <div class = "panel panel-default">
+        <a ng-href="/#!/addRoute" class="btn btn-default">Add Route</a>
+
+    </div>
+</div>
