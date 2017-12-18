@@ -14,6 +14,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script>
+    <script data-require="angular.js@1.5.5" data-semver="1.5.5" src="https://code.angularjs.org/1.5.5/angular.min.js"></script>
+
 
 </head>
 
@@ -95,6 +97,27 @@
         <option ng-selected="credentials.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouse" >{{x.name}}</option>
     </select>
     <p> </p>
+
+
+
+    <select ng-model="selected.warehouse"
+            ng-options="x.name for x in warehouses"></select>
+    <p> </p>
+
+    <div ng-if="selected.warehouse">
+    <div ng-model="selected.packages" ng-repeat="item in selected.warehouse.packages">
+
+        <input type="checkbox"
+               ng-checked="exists(item, selected)"
+               ng-click="toggle(item, selected)"> {{ item.name }}
+        <p> </p>
+    </div>
+    </div>
+    <p> </p>
+
+
+
+
 
     <label> Warehouse End:</label>
     <select ng-model="credentials.warehouseEnd">

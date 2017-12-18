@@ -32,14 +32,13 @@ public class Warehouse {
     private List<Transport> transports = new ArrayList<>();
 
     @OneToMany
-    @JsonIgnore
     private List<Package> packages = new ArrayList<>();
 
     public Long getId() {
         return id;
    }
 
-   public void setId(Long id) {
+    public void setId(Long id) {
        this.id = id;
      }
 

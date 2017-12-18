@@ -28,6 +28,11 @@ public class Data implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private PackageRepository packageRepository;
 
+    @Autowired
+    public void setPackageRepository(PackageRepository packageRepository) {
+        this.packageRepository = packageRepository;
+    }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event){
 

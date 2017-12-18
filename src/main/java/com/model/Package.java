@@ -43,7 +43,7 @@ public class Package {
     @OneToOne
     private User user;
 
-    @OneToOne
+    @ManyToOne
     private Warehouse warehouse;
 
     @ManyToOne

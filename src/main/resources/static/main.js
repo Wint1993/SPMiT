@@ -133,8 +133,8 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
 
     $scope.transfer = {};
     $scope.transport = {};
-    $scope.warehouse = {};
-    $scope.packages = {};
+    $scope.warehouses = {};
+    //$scope.packages = {};
     $scope.selected = [];
     $scope.currentPage = 1;
     $scope.pageSize = {
@@ -158,10 +158,10 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     $http
         .get('/api/package/all')
         .then(function (response) {
-            $scope.packages = response.data;
+         //   $scope.packages = response.data;
         });
 
-
+/*
     $scope.toggle = function (item, list) {
         var idx = list.indexOf(item);
         if (idx > -1) {
@@ -171,8 +171,8 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             list.push(item);
         }
     };
-
-
+*/
+/*
     $scope.exists = function (item, list) {
         return list.indexOf(item) > -1;
     };
@@ -193,7 +193,7 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             $scope.selected = $scope.packages.slice(0);
         }
     };
-
+*/
 
 
 
@@ -202,7 +202,7 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     $http
         .get('/api/warehouse/all')
         .then(function (response) {
-            $scope.warehouse = response.data;
+            $scope.warehouses = response.data;
         });
 
     $http
@@ -616,7 +616,6 @@ spmit.controller('WarehouseController', function ($scope,$q, $window, $http, NgT
     $http
         .get('/api/warehouse/all')
         .then(function (response) {
-            $scope.package = response.data;
             $scope.transfer = response.data;
         });
 
