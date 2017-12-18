@@ -1,10 +1,10 @@
 package com.repository;
 
-import com.model.User;
-import com.model.Warehouse;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.model.Warehouse;
 
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
 

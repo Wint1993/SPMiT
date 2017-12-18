@@ -1,13 +1,13 @@
 package com.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.model.Route;
 import com.repository.RouteRepository;
 import com.service.RouteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RouteServiceImpl implements RouteService {

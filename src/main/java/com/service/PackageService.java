@@ -1,11 +1,12 @@
 package com.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.model.Package;
 import com.model.Route;
 import com.model.User;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public interface PackageService {

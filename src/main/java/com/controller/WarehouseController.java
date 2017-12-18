@@ -1,20 +1,22 @@
 package com.controller;
 
-import com.model.Package;
-import com.model.Warehouse;
-import com.repository.PackageRepository;
-import com.repository.WarehouseRepository;
-import com.service.WarehouseService;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import com.model.Package;
+import com.model.Warehouse;
+import com.repository.PackageRepository;
+import com.repository.WarehouseRepository;
+import com.service.WarehouseService;
 
 @RestController
 @RequestMapping("/api/warehouse")

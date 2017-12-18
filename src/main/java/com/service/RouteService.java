@@ -1,9 +1,10 @@
 package com.service;
 
-import com.model.Route;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.model.Route;
 
 @Service
 public interface RouteService {

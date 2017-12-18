@@ -1,10 +1,10 @@
 package com.service;
 
+import java.util.List;
 
-import com.model.User;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.model.User;
 
 @Service
 public interface UserService {

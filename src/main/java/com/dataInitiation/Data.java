@@ -1,5 +1,14 @@
 package com.dataInitiation;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
+
 import com.model.Package;
 import com.model.Transport;
 import com.model.User;
@@ -7,14 +16,6 @@ import com.model.Warehouse;
 import com.repository.PackageRepository;
 import com.repository.UserRepository;
 import com.repository.WarehouseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 @Component
 public class Data implements ApplicationListener<ContextRefreshedEvent> {

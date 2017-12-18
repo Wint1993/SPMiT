@@ -1,10 +1,10 @@
 package com.service;
 
+import java.util.List;
 
-import com.model.Warehouse;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.model.Warehouse;
 
 @Service
 public interface WarehouseService {

@@ -1,13 +1,13 @@
 package com.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.model.Transport;
 import com.repository.TransportRepository;
 import com.service.TransportService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TransportServiceImpl implements TransportService {

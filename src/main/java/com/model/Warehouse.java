@@ -1,13 +1,22 @@
 package com.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -15,6 +24,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+	property = "id")
 public class Warehouse {
 
     @Id
@@ -31,7 +42,7 @@ public class Warehouse {
     @JsonIgnore
     private List<Transport> transports = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "warehouse")
     private List<Package> packages = new ArrayList<>();
 
     public Long getId() {

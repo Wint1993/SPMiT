@@ -1,16 +1,15 @@
 package com.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.model.Package;
 import com.model.Warehouse;
 import com.repository.PackageRepository;
 import com.repository.WarehouseRepository;
 import com.service.WarehouseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class WarehouseServiceImpl implements WarehouseService {

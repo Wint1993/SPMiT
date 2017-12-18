@@ -1,9 +1,10 @@
 package com.repository;
 
-import com.model.Route;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.model.Route;
 
 public interface RouteRepository extends JpaRepository<Route, Long> {
 

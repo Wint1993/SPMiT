@@ -1,12 +1,13 @@
 package com.repository;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.model.Package;
 import com.model.Route;
 import com.model.User;
 import com.model.Warehouse;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface PackageRepository extends JpaRepository<Package, Long> {
 
