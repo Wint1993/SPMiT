@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Null;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -24,8 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Package")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-	property = "id")
+
 public class Package {
 
     @Id
@@ -55,8 +55,7 @@ public class Package {
     private User user;
 
     @ManyToOne
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-	property = "id")
+    @JsonIdentityReference
     private Warehouse warehouse;
 
     @ManyToOne

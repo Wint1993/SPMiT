@@ -94,34 +94,31 @@
 
     <label> Warehouse Start:</label>
     <select ng-model="credentials.warehouseStart">
-        <option ng-selected="credentials.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouse" >{{x.name}}</option>
+        <option ng-selected="credentials.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
     </select>
     <p> </p>
 
+    <div ng-if="credentials.warehouseStart">
+        <div ng-model="selected.packages" ng-repeat="item in credentials.warehouseStart.packages">
 
+            <input type="checkbox"
+                   ng-checked="exists(item, selected)"
+                   ng-click="toggle(item, selected)"> {{ item.name }} <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
+            <script>
+                $(document).ready(function(){
+                    $('[data-toggle="popover"]').popover();
+                });
+            </script>
+            <p> </p>Owner {{ item.user.firstName }}  {{ item.user.lastName }}
 
-    <select ng-model="selected.warehouse"
-            ng-options="x.name for x in warehouses"></select>
-    <p> </p>
-
-    <div ng-if="selected.warehouse">
-    <div ng-model="selected.packages" ng-repeat="item in selected.warehouse.packages">
-
-        <input type="checkbox"
-               ng-checked="exists(item, selected)"
-               ng-click="toggle(item, selected)"> {{ item.name }}
-        <p> </p>
+            <p> </p>
+        </div>
     </div>
-    </div>
     <p> </p>
-
-
-
-
 
     <label> Warehouse End:</label>
     <select ng-model="credentials.warehouseEnd">
-        <option ng-selected="credentials.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouse" >{{x.name}}</option>
+        <option ng-selected="credentials.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
     </select>
     <p> </p>
 
@@ -139,24 +136,7 @@
            show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="dateTime"
            class=" dtp-no-msclear dtp-input md-input" type="text">
 
-    <div flex-xs flex="50">
-        <md-checkbox aria-label="Select All"
-                     ng-checked="isChecked()"
-                     md-indeterminate="isIndeterminate()"
-                     ng-click="toggleAll()">
-            <span ng-if="isChecked()">Un-</span>Select All
-        </md-checkbox>
-    </div>
-    <div class="demo-select-all-checkboxes" ng-model="credentials.packages" flex="100" ng-repeat="item in packages">
-        <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
-            {{ item.name }}    <p> </p>
-            {{ item.user.firstName }}    {{ item.user.lastName }}
-        </md-checkbox>
-    </div>
-    <div flex="100">
-        <h2 class="md-title">Selected Items</h2>
-        <code style="display: block; padding: 8px;">{{selected | json}}</code>
-    </div>
+
 
 
     <div class = "panel panel-default">
@@ -166,3 +146,9 @@
 
 </div>
 
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
