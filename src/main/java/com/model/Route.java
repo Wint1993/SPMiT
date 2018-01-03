@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class Route {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToOne

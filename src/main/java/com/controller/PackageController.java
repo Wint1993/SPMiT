@@ -10,14 +10,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.model.Package;
+import com.model.Warehouse;
 import com.repository.PackageRepository;
 import com.service.PackageService;
+import com.service.WarehouseService;
+
 
 @RestController
 @RequestMapping("/api/package")
@@ -29,11 +33,17 @@ public class PackageController {
     @Autowired
     private PackageRepository packageRepository;
 
+    @Autowired private WarehouseService warehouseService;
 
     @RequestMapping(value = "/create", method = POST, headers = "Content-Type=application/json;charset=UTF-8")
     public Package create(@RequestBody Package pack){
         return packageService.create(pack);
     }
+
+    @ModelAttribute("warehouses")
+	public List<Warehouse> warehouses() {
+    	return warehouseService.findAll();
+	}
 
     @RequestMapping(value = "/remove/{id}", method = DELETE)
     public Package remove(@PathVariable long id){
