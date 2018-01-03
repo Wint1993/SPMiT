@@ -148,11 +148,6 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     console.log( $scope.selected );
 
     var e = document.getElementById("startId");
-   // var str = null;
-  //  str = e.options[e.selectedIndex].ngvalueselect;
-   // console.log(str);
-
-
 
 
     $http
@@ -203,6 +198,12 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
         .get('/api/warehouse/all')
         .then(function (response) {
             $scope.warehouses = response.data;
+            $scope.warehouses.forEach(function (warehouse) {
+                $http.get('/api/warehouse/all/'+warehouse['id'])
+                    .then(function (response) {
+                        warehouse['packages'] = response.data;
+                    });
+            })
         });
 
     $http

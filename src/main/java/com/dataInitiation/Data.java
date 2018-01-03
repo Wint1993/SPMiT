@@ -14,6 +14,7 @@ import com.model.Transport;
 import com.model.User;
 import com.model.Warehouse;
 import com.repository.PackageRepository;
+import com.repository.TransportRepository;
 import com.repository.UserRepository;
 import com.repository.WarehouseRepository;
 
@@ -28,6 +29,8 @@ public class Data implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private PackageRepository packageRepository;
+
+    @Autowired private TransportRepository transportRepository;
 
     @Autowired
     public void setPackageRepository(PackageRepository packageRepository) {
@@ -100,8 +103,24 @@ public class Data implements ApplicationListener<ContextRefreshedEvent> {
         pack.setWarehouse(warehouse);
         packageRepository.save(pack);
 
+		Package pack2 = new Package();
+		pack2.setName("test test ");
+		pack2.setCapacity(20.0);
+		pack2.setDescription("Kolo jest okrągłe");
+		pack2.setWeight(29.0);
+		pack2.setUser(user);
+		pack2.setxDimension(18.2);
+		pack2.setyDimension(18.2);
+		pack2.setzDimension(18.2);
+		pack2.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+		pack2.setWarehouse(warehouse);
+		packageRepository.save(pack2);
+
        Transport transport = new Transport();
-       //transport.set
+       transport.setTransportName("Transport nazwa");
+       transport.setMaxCapacity(12300.0);
+       transport.setMaxWeight(100.0);
+       transportRepository.save(transport);
 
 
     }
