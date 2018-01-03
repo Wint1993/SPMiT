@@ -10,9 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,12 +22,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-	property = "id")
 public class Warehouse {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
@@ -43,6 +39,7 @@ public class Warehouse {
     private List<Transport> transports = new ArrayList<>();
 
     @OneToMany(mappedBy = "warehouse")
+	@JsonIgnore
     private List<Package> packages = new ArrayList<>();
 
     public Long getId() {
