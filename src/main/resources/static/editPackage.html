@@ -87,18 +87,28 @@
              </li>
          </ul>
          Selected: <b>{{ selected.item }}</b> -->
+        <div data-ng-init="edit()">
+            <b>Person Data:</b> <select id="editPackage">
+            <option value="">-- Select Persons --</option>
+            <option data-ng-repeat="edit in editPackage" value="{{edit.name}}">{{edit.name | json}}</option>
+        </select><br>
+        </div>
+
         <form ng-submit="editcos()">
             <table>
                 <tr>
                     <td>First Name</td>
-                    <td><input type="text" ng-model="form.name" size="60" /></td>
+                    <td><input type="text" id="name" ng-model="vm.cos.name" size="60" /></td>
+                    <td><input type="text"  ng-model="form.name" size="60" /></td>
                 </tr>
             </table>
         </form>
-
+        {{form.name}}
 
         <label> Name:</label>
-        <input type="text" placeholder="Enter name" ng-model="form.name">
+        <input type="text" class="form-control" placeholder="Enter name" ng-model="editPackage.name"> {{pack.name | json}}
+        <p> </p>
+        <input type="text" placeholder="Enter name" ng-model="vm.cos.name"> {{vm.cos.name | json}
         <p> </p>
         <label> Description:</label>
         <input type="text" placeholder="Enter package description" required ng-model="credentials.description" >

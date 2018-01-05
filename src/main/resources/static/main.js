@@ -615,7 +615,9 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
     $scope.form = {
         name : ""
     };
-    $scope.packa = {};
+
+    $scope.packa = "";
+
     $scope.edit = function(pack){
        // console.log(pack);
         console.log(pack['id']);
@@ -625,17 +627,22 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
             data: pack
 
         }).then(function successCallback(response){
+            vm.cos = response.data;
                 console.log("jebac");
                 $scope.editPackage = response.data;
+              //  console.log($scope.packa);
                 $scope.form.name = pack.name;
+                $scope.packs = pack.name;
                 console.log($scope.form.name);
-                console.log($scope.form.name);
-              //  console.log(pack.name);
+              //   console.log($scope.form.name);
+              //  console.log( $scope.editPackage);
               //  editPackage.name= $scope.editPackage.name;
                 //$scope.packa.name = pack.name;
                  //console.log($scope.packa.name);
                 //console.log($scope.editPackage);
                 $location.path('/editPackage');
+                $scope.editPackage = response.data;
+                console.log( $scope.editPackage);
                 $scope.form.name = pack.name;
                 // $window.location.reload();
                // vm.usersTable.reload();
@@ -650,7 +657,7 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
         $http({
             method : method,
             url : url,
-            data : angular.toJson($scope.form),
+            data : angular.toJson($scope.editPackage),
             headers : {
                 'Content-Type' : 'application/json'
             }
