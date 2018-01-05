@@ -57,7 +57,16 @@ spmit.config(function ($routeProvider) {
                 controller: 'PackageController',
                 templateUrl: 'addPackage.html'
             })
-
+        .when('/routeOptymalize',
+            {
+                controller: 'RouteController',
+                templateUrl: 'routeOptymalize.html'
+            })
+        .when('/editPackage',
+            {
+                controller: 'PackageController',
+                templateUrl: 'editPackage.html'
+            })
         .otherwise({redirectTo: '/'});
 });
 
@@ -136,63 +145,17 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     $scope.warehouses = {};
     //$scope.packages = {};
     $scope.selected = [];
+    $scope.accpetedPackage = {};
+    $scope.noacceptedPackage = {};
     $scope.currentPage = 1;
     $scope.pageSize = {
         "1":"1", "2":"2", "10":"10","25":"25","50":"50"
     };
+    $scope.selectedPackages = {};
     $scope.sort = function(keyname){
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
     };
-
-    console.log( $scope.selected );
-
-    var e = document.getElementById("startId");
-
-
-    $http
-        .get('/api/package/all')
-        .then(function (response) {
-         //   $scope.packages = response.data;
-        });
-
-/*
-    $scope.toggle = function (item, list) {
-        var idx = list.indexOf(item);
-        if (idx > -1) {
-            list.splice(idx, 1);
-        }
-        else {
-            list.push(item);
-        }
-    };
-*/
-/*
-    $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
-    };
-
-    $scope.isIndeterminate = function() {
-        return ($scope.selected.length !== 0 &&
-            $scope.selected.length !== $scope.packages.length);
-    };
-
-    $scope.isChecked = function() {
-        return $scope.selected.length === $scope.packages.length;
-    };
-
-    $scope.toggleAll = function() {
-        if ($scope.selected.length === $scope.packages.length) {
-            $scope.selected = [];
-        } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-            $scope.selected = $scope.packages.slice(0);
-        }
-    };
-*/
-
-
-
-
 
     $http
         .get('/api/warehouse/all')
@@ -206,13 +169,96 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             })
         });
 
+
+
+
+    var e = document.getElementById("startId");
+
+
+    $http
+        .get('/api/package/all')
+        .then(function (response) {
+         //   $scope.packages = response.data;
+        });
+
+    $scope.selected = [];
+    $scope.toggle = function (item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+            list.splice(idx, 1);
+        }
+        else {
+            list.push(item);
+        }
+    };
+    $scope.exists = function (item, list) {
+        return list.indexOf(item) > -1;
+    };
+/*
+    $scope.selectedItems = angular.copy($scope.warehouses.packages);
+    console.log($scope.selectedItems);
+
+    $scope.toggle = function (index) {
+        if ($scope.warehouses.packages[index].selected) {
+            $scope.selectedItems.splice(index, 1);
+        }
+        else {
+            $scope.selectedItems.splice(index, 0, $scope.warehouses.packages[index]);
+        }
+    };
+*/
+
+
+    $http
+        .get('/api/package/all')
+        .then(function (response) {
+            $scope.accpetedPackage = response.data;
+        });
+
+    var vm = this;
+    vm.accepted = new NgTableParams({
+        page: 1,
+        count: 5
+    }, {
+        total: $scope.accpetedPackage.length,
+
+        getData:function(params) {
+            var deferred = $q.defer();
+            $scope.data = $scope.accpetedPackage.slice((params.page() - 1) * params.count(), params.page() * params.count());
+            deferred.resolve($scope.data);
+        }
+    });
+
+
+
+    $http
+        .get('/api/package/all')
+        .then(function (response) {
+            $scope.noacceptedPackage = response.data;
+        });
+
+
+    vm.noaccepted = new NgTableParams({
+        page: 1,
+        count: 5
+    }, {
+        total: $scope.noacceptedPackage.length,
+
+        getData:function(params) {
+            var deferred = $q.defer();
+            $scope.data = $scope.noacceptedPackage.slice((params.page() - 1) * params.count(), params.page() * params.count());
+            deferred.resolve($scope.data);
+        }
+    });
+
+
     $http
         .get('/api/route/all')
         .then(function (response) {
             $scope.transfer = response.data;
         });
 
-    var vm = this;
+    //var vm = this;
     vm.usersTable = new NgTableParams({
         page: 1,
         count: 5
@@ -225,8 +271,26 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             deferred.resolve($scope.data);
         }
     });
+    $scope.optymalize = function(){
+        $scope.selectedPackages = $scope.selected;
+        var request = {
+            method: 'POST',
+            url: '/api/route/optymalize',
+            //   headers: {
+            //     'Content-Type': 'application/x-www-form-urlencoded'
+            // },
+            data: $scope.selectedPackages };
+           $http(request)
+            .then(function successCallback(response){
+                    $location.path('/routeOptymalize');
+                },
+                function errorCallback(response) {
+                });
+    };
+
 
     $scope.save = function () {
+        console.log( $scope.selected );
         var request = {
             method: 'POST',
             url: '/api/route/create',
@@ -459,6 +523,7 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
     $scope.transfer = {};
     $scope.users = {};
     $scope.currentPage = 1;
+    $scope.editPackage = {};
     $scope.pageSize = {
         "1":"1", "2":"2", "10":"10","25":"25","50":"50"
     };
@@ -546,7 +611,52 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
         }
     });
 
+    var editPackage ={};
+    $scope.form = {
+        name : ""
+    };
+    $scope.packa = {};
+    $scope.edit = function(pack){
+       // console.log(pack);
+        console.log(pack['id']);
+        $http({
+            method : 'PUT',
+            url : '/api/package/edit/'+pack['id'],
+            data: pack
 
+        }).then(function successCallback(response){
+                console.log("jebac");
+                $scope.editPackage = response.data;
+                $scope.form.name = pack.name;
+                console.log($scope.form.name);
+                console.log($scope.form.name);
+              //  console.log(pack.name);
+              //  editPackage.name= $scope.editPackage.name;
+                //$scope.packa.name = pack.name;
+                 //console.log($scope.packa.name);
+                //console.log($scope.editPackage);
+                $location.path('/editPackage');
+                $scope.form.name = pack.name;
+                // $window.location.reload();
+               // vm.usersTable.reload();
+                console.log("jebac");
+            },
+            function errorCallback(response) {
+                console.log("cos");
+            });
+    };
+
+    $scope.editcos = function() {
+        $http({
+            method : method,
+            url : url,
+            data : angular.toJson($scope.form),
+            headers : {
+                'Content-Type' : 'application/json'
+            }
+        }).then( _success, _error );
+
+    };
 
     $scope.deletePack = function(pack) {
         console.log(pack);

@@ -1,0 +1,87 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+    }
+</style>
+
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a class="active" ng-href="/#!/route">Route</a></li>
+        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a href="/#!/user">Users</a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+
+
+
+
+<div class="col-xs-8">
+
+    <table ng-table="vm.accpeted" class="table">
+        <thead>
+        <tr>
+            <th >Accepted package
+            </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="pack in accpetedPackage">
+            <td title="'Accepted package'" >
+                {{pack.name}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table ng-table="vm.noaccepted" class="table">
+        <thead>
+        <tr>
+            <th >Noaccepted package
+            </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="pack in noacceptedPackage">
+            <td title="'Noaccepted package'" >
+                {{pack.name}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class = "panel panel-default">
+        <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
+        <a ng-href="/#!/route" class="btn btn-warning">Cancel</a></div>
+   </div>
+
+
+</div>

@@ -1,0 +1,157 @@
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <link rel="stylesheet" href="js/ui-select/dist/select.css">
+    <script src="js/ui-select/dist/select.css"></script>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            background-color: #f1f1f1;
+        }
+
+        li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        li a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+        body {
+            padding: 15px;
+        }
+
+        .select2 > .select2-choice.ui-select-match {
+            /* Because of the inclusion of Bootstrap */
+            height: 29px;
+        }
+
+        .selectize-control > .selectize-dropdown {
+            top: 36px;
+        }
+        /* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+        .select-box {
+            background: #fff;
+            position: relative;
+            z-index: 1;
+        }
+        .alert-info.positioned {
+            margin-top: 1em;
+            position: relative;
+            z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+        }
+    </style>
+</head>
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a ng-href="/#!/route">Route</a></li>
+        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a href="/#!/user">Users</a></li>
+        <li><a class="active"  ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+
+<div class="col-xs-8">
+    <div class="wrapper" >
+        <!-- <ul>
+             <li ng-repeat="item in items">
+                 <a ng-click="selected.item = item">{{ item }}</a>
+             </li>
+         </ul>
+         Selected: <b>{{ selected.item }}</b> -->
+        <form ng-submit="editcos()">
+            <table>
+                <tr>
+                    <td>First Name</td>
+                    <td><input type="text" ng-model="form.name" size="60" /></td>
+                </tr>
+            </table>
+        </form>
+
+
+        <label> Name:</label>
+        <input type="text" placeholder="Enter name" ng-model="form.name">
+        <p> </p>
+        <label> Description:</label>
+        <input type="text" placeholder="Enter package description" required ng-model="credentials.description" >
+        <p> </p>
+        <label> Weight :</label>
+        <input type="text" placeholder="Enter package weight " ng-model="credentials.weight" >
+        <p> </p>
+        <label> Width dimension [m^3]:</label>
+        <input type="text" placeholder="Enter package width"  ng-model="credentials.xDimension" >
+        <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Width" data-html="true" data-content="<img src='/picture/width.png' width='200' />">?</button>
+        <p> </p>
+        <label> Length dimension [m^3]:</label>
+        <input type="text" placeholder="Enter package length" ng-model="credentials.yDimension" >
+        <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Length" data-html="true" data-content="<img src='/picture/length.png' width='200' />">?</button>
+
+        <p> </p>
+        <label> Height dimension [m^3]:</label>
+        <input type="text" placeholder="Enter package height" ng-model="credentials.zDimension" >
+        <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
+
+        <p> </p>
+        <label> Warehouse:</label>
+        <select ng-model="credentials.warehouse">
+            <option ng-selected="credentials.warehouse == x" ng-value="x" ng-repeat="x in transfer" >{{x.name}}</option>
+        </select>
+        <p> </p>
+
+        <label> User:</label>
+        <ui-select ng-model="credentials.user" theme="select2"  style="min-width: 200px;" title="Choose a person">
+            <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected.firstName}} {{$select.selected.lastName}}</ui-select-match>
+            <ui-select-choices ng-selected="credentials.user == person" ng-value="person" repeat="person in users | propsFilter: {firstName: $select.search, lastName: $select.search, firmName: $select.search  }">
+                <div ng-bind-html="person.firstName +' '+  person.lastName | highlight: $select.search"></div>
+                <small>
+                    Address: {{person.address}} <p></p>
+                    Firm: {{person.firmName}}
+                </small>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <p></p>
+
+    <div class = "panel panel-default">
+        <button class="btn btn-primary" ng-click="save(credentials)">Save</button>
+        <a ng-href="/#!/package" class="btn btn-warning">Cancel</a></div>
+
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

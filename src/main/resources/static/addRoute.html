@@ -104,6 +104,7 @@
             <input type="checkbox"
                    ng-checked="exists(item, selected)"
                    ng-click="toggle(item, selected)"> {{ item.name }} <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
+
             <script>
                 $(document).ready(function(){
                     $('[data-toggle="popover"]').popover();
@@ -115,6 +116,13 @@
         </div>
     </div>
     <p> </p>
+
+
+    <md-chips ng-model="selectedItems" readonly="readonly">
+        <md-chip-template>
+            {{$chip.name}}
+        </md-chip-template>
+    </md-chips>
 
     <label> Warehouse End:</label>
     <select ng-model="credentials.warehouseEnd">
@@ -137,11 +145,15 @@
            class=" dtp-no-msclear dtp-input md-input" type="text">
 
 
-
+    <div flex="100">
+        <h2 class="md-title">Selected Items</h2>
+        <code style="display: block; padding: 8px;">{{selected | json}}</code>
+    </div>
 
     <div class = "panel panel-default">
         <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
-        <a ng-href="/#!/route" class="btn btn-warning">Cancel</a></div>
+        <a ng-href="/#!/route" class="btn btn-warning">Cancel</a>
+        <a href="/#!/routeOptymalize" class="btn btn-primary" ng-click="optymalize()" >Optymalize</a></div>
 
 
 </div>
