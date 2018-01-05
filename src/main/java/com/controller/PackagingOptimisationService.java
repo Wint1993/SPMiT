@@ -30,9 +30,11 @@ public class PackagingOptimisationService {
 
 		Packager packager = new Packager(newArrayList(container));
 
-//		packagesDimensions.stream()
-//			.map(packager.pack())
-
+		for (PackageDto item : packagesDimensions) {
+			if (null == packager.pack(newArrayList(item.getBox()))) {
+				item.makeUnavailable();
+			}
+		}
 		int counter = 1;
 
 		while (packager.pack(packagesDimensions.stream().filter(PackageDto::isAccepted).map(PackageDto::getBox).collect(toList())) == null) {

@@ -84,7 +84,6 @@ public class PackageController {
     }
 
 
-
     @RequestMapping(value = "/all", method = GET)
     public List<Package> findAll(){
 	        return packageService.findAll();
