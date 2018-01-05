@@ -7,12 +7,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.model.Package;
 import com.model.Route;
+import com.model.Transport;
 import com.repository.RouteRepository;
 import com.service.RouteService;
 
@@ -25,6 +28,9 @@ public class RouteController {
 
     @Autowired
     private RouteRepository routeRepository;
+
+    @Autowired
+	private PackagingOptimisationService packagingOptimisationService;
 
     @RequestMapping(value = "/create", method = POST)
     public Route create(@RequestBody Route route){
@@ -44,4 +50,10 @@ public class RouteController {
         routeRepository.flush();
         return route;
     }
+
+    @GetMapping("/optimise")
+	public TransportPackagingDto optimise(@RequestBody Transport transport, @RequestBody List<Package> packages) {
+
+    	return packagingOptimisationService.optimise(transport, packages);
+	}
 }
