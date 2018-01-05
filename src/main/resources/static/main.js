@@ -62,12 +62,12 @@ spmit.config(function ($routeProvider) {
                 controller: 'RouteController',
                 templateUrl: 'routeOptymalize.html'
             })
-        .when('/editPackage',
+        .when('/editPackage/:id',
             {
-                controller: 'PackageController',
+                controller: 'PackageEditController',
                 templateUrl: 'editPackage.html'
             })
-        .otherwise({redirectTo: '/'});
+        .otherwise({redirectTo: '/package'});
 });
 
 spmit.controller('TransportController', function ($scope, $window, $http,NgTableParams,$modal, $log, $location) {
@@ -516,6 +516,26 @@ spmit.controller('UserInstanceCtrl', function ($scope,$log, $modalInstance,$loca
 
 
 
+spmit.controller('PackageEditController', function ($scope, $http, $location, $routeParams) {
+
+    $scope.form = {
+        name : ""
+    };
+    // console.log(pack);
+    console.log($routeParams.id);
+    $http({
+        method : 'GET',
+        url : '/api/package/'+$routeParams.id
+    }).then(function successCallback(response){
+            console.log("jebac");
+            $scope.form.name = response.data.name;
+            console.log($scope.form);
+        },
+        function errorCallback(response) {
+            console.log("cos");
+        });
+});
+
 spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTableParams, $log, $location) {
     $scope.package = {};
     $scope.error = false;
@@ -536,7 +556,6 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
     };
-
 
     $http
         .get('/api/user/all')
@@ -596,6 +615,10 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
         $scope.credentials = {};
     };
 
+    $scope.edit = function(package) {
+        $location.path("/editPackage/"+package['id']);
+    };
+
     vm.usersTable = new NgTableParams({
         page: 1,
         count: 2,
@@ -610,41 +633,6 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
          //   deferred.resolve($scope.cos);
         }
     });
-
-    var editPackage ={};
-    $scope.form = {
-        name : ""
-    };
-    $scope.packa = {};
-    $scope.edit = function(pack){
-       // console.log(pack);
-        console.log(pack['id']);
-        $http({
-            method : 'PUT',
-            url : '/api/package/edit/'+pack['id'],
-            data: pack
-
-        }).then(function successCallback(response){
-                console.log("jebac");
-                $scope.editPackage = response.data;
-                $scope.form.name = pack.name;
-                console.log($scope.form.name);
-                console.log($scope.form.name);
-              //  console.log(pack.name);
-              //  editPackage.name= $scope.editPackage.name;
-                //$scope.packa.name = pack.name;
-                 //console.log($scope.packa.name);
-                //console.log($scope.editPackage);
-                $location.path('/editPackage');
-                $scope.form.name = pack.name;
-                // $window.location.reload();
-               // vm.usersTable.reload();
-                console.log("jebac");
-            },
-            function errorCallback(response) {
-                console.log("cos");
-            });
-    };
 
     $scope.editcos = function() {
         $http({
