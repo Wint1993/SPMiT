@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.skjolberg.packing.Box;
 import com.github.skjolberg.packing.Dimension;
 import com.model.Package;
@@ -13,6 +14,8 @@ public class PackageDto {
 	private String packageName;
 	private Long packageId;
 	private boolean accepted;
+
+	@JsonIgnore
 	private Box box;
 
 	public PackageDto(Package aPackage) {
