@@ -7,11 +7,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.model.Package;
 import com.model.Route;
@@ -51,7 +47,8 @@ public class RouteController {
         return route;
     }
 
-    @GetMapping("/optimise")
+    //@GetMapping("/optimise")
+    @PostMapping(path= "/optimise")
    // @RequestMapping(value = "/optimise", method = POST)
 	public TransportPackagingDto optimise(@RequestBody Transport transport, @RequestBody List<Package> packages) {
 
