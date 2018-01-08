@@ -2,6 +2,7 @@ package com.service.impl;
 
 import java.util.List;
 
+import com.model.Warehouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,10 @@ public class TransportServiceImpl implements TransportService {
     @Override
     public void remove(Transport transport) {
         transportRepository.delete(transport);
+    }
+
+    @Override
+    public void updateTransport(Transport transport){
+        transportRepository.save(transport);
     }
 }

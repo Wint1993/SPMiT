@@ -52,6 +52,7 @@ public class RouteController {
     }
 
     @GetMapping("/optimise")
+   // @RequestMapping(value = "/optimise", method = POST)
 	public TransportPackagingDto optimise(@RequestBody Transport transport, @RequestBody List<Package> packages) {
 
     	return packagingOptimisationService.optimise(transport, packages);

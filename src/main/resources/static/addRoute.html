@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
     <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://gitcdn.link/repo/angular/bower-material/master/angular-material.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <link rel="stylesheet" href="js/ui-select/dist/select.css">
+    <script src="js/ui-select/dist/select.css"></script>
+
     <script src="https://unpkg.com/ng-material-datetimepicker@1.9.6/dist/angular-material-datetimepicker.min.js"></script>
     <script src="https://unpkg.com/ng-material-datetimepicker@1.9.6/dist/angular-material-datetimepicker.min.js.map"></script>
     <link href="https://unpkg.com/ng-material-datetimepicker@1.9.6/dist/material-datetimepicker.min.css" rel="stylesheet" type="text/css">
@@ -73,6 +82,29 @@
         background-color: #555;
         color: white;
     }
+    body {
+        padding: 15px;
+    }
+
+    .select2 > .select2-choice.ui-select-match {
+        /* Because of the inclusion of Bootstrap */
+        height: 29px;
+    }
+
+    .selectize-control > .selectize-dropdown {
+        top: 36px;
+    }
+    /* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+    .select-box {
+        background: #fff;
+        position: relative;
+        z-index: 1;
+    }
+    .alert-info.positioned {
+        margin-top: 1em;
+        position: relative;
+        z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+    }
 </style>
 
 
@@ -92,75 +124,96 @@
     <p> </p>
     <p> </p>
 
-    <label> Warehouse Start:</label>
+   <label> Warehouse Start:</label>
     <select ng-model="credentials.warehouseStart">
         <option ng-selected="credentials.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
     </select>
-    <p> </p>
-
-    <div ng-if="credentials.warehouseStart">
-        <div ng-model="selected.packages" ng-repeat="item in credentials.warehouseStart.packages">
-
-            <input type="checkbox"
-                   ng-checked="exists(item, selected)"
-                   ng-click="toggle(item, selected)"> {{ item.name }} <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
-
-            <script>
-                $(document).ready(function(){
-                    $('[data-toggle="popover"]').popover();
-                });
-            </script>
-            <p> </p>Owner {{ item.user.firstName }}  {{ item.user.lastName }}
-
-            <p> </p>
-        </div>
-    </div>
-    <p> </p>
 
 
-    <md-chips ng-model="selectedItems" readonly="readonly">
-        <md-chip-template>
-            {{$chip.name}}
-        </md-chip-template>
-    </md-chips>
+    <!--    <label>  Warehouse Start:</label>
+      <ui-select ng-model="credentials.warehouseStart" id="startId" theme="select2"  style="min-width: 200px;" title="Choose a person">
+          <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected._name}} </ui-select-match>
+          <ui-select-choices ng-selected="credentials.warehouseStart == x" ng-value="x" repeat="x in warehouses | propsFilter: {_name: $select.search }">
+              <div ng-bind-html="x._name  | highlight: $select.search"></div>
+              <small>
+                  Address: {{x.address}} <p></p>
+                  Telephone number: {{x.telephoneNumber}}
+              </small>
+          </ui-select-choices>
+      </ui-select>
+  -->
 
-    <label> Warehouse End:</label>
-    <select ng-model="credentials.warehouseEnd">
-        <option ng-selected="credentials.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
-    </select>
-    <p> </p>
+      <div ng-if="credentials.warehouseStart">
+          <div ng-model="selected.packages" ng-repeat="item in credentials.warehouseStart.packages">
 
-    <label> Description:</label>
-    <input type="text" placeholder="Enter route description" required autofocus ng-model="credentials.description">
-    <p> </p>
+              <input type="checkbox"
+                     ng-checked="exists(item, selected)"
+                     ng-click="toggle(item, selected)"> {{ item.name }} <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
 
-    <label> Transport:</label>
-    <select ng-model="credentials.transport">
-        <option ng-selected="credentials.transport == x" ng-value="x" ng-repeat="x in transport" >{{x.transportName}}</option>
-    </select>
+              <script>
+                  $(document).ready(function(){
+                      $('[data-toggle="popover"]').popover();
+                  });
+              </script>
+              <p> </p>Owner {{ item.user.firstName }}  {{ item.user.lastName }}
 
-    <p> </p>
-    <input mdc-datetime-picker="" date="true" time="true" id="datetime" placeholder="Date"
-           show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="dateTime"
-           class=" dtp-no-msclear dtp-input md-input" type="text">
-
-
-    <div flex="100">
-        <h2 class="md-title">Selected Items</h2>
-        <code style="display: block; padding: 8px;">{{selected | json}}</code>
-    </div>
-
-    <div class = "panel panel-default">
-        <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
-        <a ng-href="/#!/route" class="btn btn-warning">Cancel</a>
-        <a href="/#!/routeOptymalize" class="btn btn-primary" ng-click="optymalize()" >Optymalize</a></div>
+              <p> </p>
+          </div>
+      </div>
 
 
-</div>
+      <md-chips ng-model="selectedItems" readonly="readonly">
+          <md-chip-template>
+              {{$chip.name}}
+          </md-chip-template>
+      </md-chips>
+
+      <label> Warehouse End:</label>
+      <select ng-model="credentials.warehouseEnd">
+          <option ng-selected="credentials.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
+      </select>
+      <p> </p>
+
+      <label> Description:</label>
+      <input type="text" placeholder="Enter route description" required autofocus ng-model="credentials.description">
+      <p> </p>
+
+      <label> Transport:</label>
+      <select ng-model="credentials.transport">
+          <option ng-selected="credentials.transport == x" ng-value="x" ng-repeat="x in transport" >{{x.transportName}}</option>
+      </select>
+
+      <p> </p>
+      <div class="panel panel-default">
+          <label>   Start Date </label>
+      <input mdc-datetime-picker="" date="true" time="true" id="datetime" placeholder="Date"
+             show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="credentials.dateTime"
+             class=" dtp-no-msclear dtp-input md-input" type="text">
+      </div>
+      <p> </p>
+      <div class="panel panel-default">
+        <label> End Date </label>
+      <input mdc-datetime-picker="" date="true" time="true" id="datetime1" placeholder="Date"
+             show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="credentials.dateTime1"
+             class=" dtp-no-msclear dtp-input md-input" type="text">
+      </div>
+
+      <div flex="100">
+          <h2 class="md-title">Selected Items</h2>
+          <code style="display: block; padding: 8px;">{{selected | json}}</code>
+      </div>
+
+      <div class = "panel panel-default">
+          <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
+          <a ng-href="/#!/route" class="btn btn-warning">Cancel</a>
+          <a href="/#!/routeOptymalize" class="btn btn-primary" ng-click="optimise(credentials)" >Optymalize</a></div>
 
 
-<script>
-    $(document).ready(function(){
-        $('[data-toggle="popover"]').popover();
-    });
-</script>
+  </div>
+
+
+  <script>
+      $(document).ready(function(){
+          $('[data-toggle="popover"]').popover();
+      });
+  </script>

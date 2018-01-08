@@ -113,10 +113,17 @@
 
         <p> </p>
         <label> Warehouse:</label>
-        <select ng-model="credentials.warehouse">
-            <option ng-selected="credentials.warehouse == x" ng-value="x" ng-repeat="x in transfer" >{{x.name}}</option>
-        </select>
-        <p> </p>
+        <ui-select ng-model="credentials.warehouse" theme="select2"  style="min-width: 200px;" title="Choose a warehouse">
+            <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected._name}} </ui-select-match>
+            <ui-select-choices ng-selected="credentials.warehouse == war" ng-value="war" repeat="war in transfer | propsFilter: {_name: $select.search}">
+                <div ng-bind-html="war._name  | highlight: $select.search"></div>
+                <small>
+                    Address: {{war.address}} <p></p>
+                    Telephone Numer: {{war.telephoneNumber}}
+                </small>
+            </ui-select-choices>
+        </ui-select>
+        <p></p>
 
         <label> User:</label>
         <ui-select ng-model="credentials.user" theme="select2"  style="min-width: 200px;" title="Choose a person">

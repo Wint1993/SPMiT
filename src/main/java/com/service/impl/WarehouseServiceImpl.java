@@ -46,4 +46,11 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         warehouseRepository.delete(warehouse);
     }
+
+
+    @Override
+    public void updateWarehouse(Warehouse warehouse){
+        warehouseRepository.save(warehouse);
+    }
+
 }

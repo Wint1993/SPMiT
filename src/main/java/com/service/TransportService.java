@@ -12,4 +12,5 @@ public interface TransportService {
     Transport create(Transport transport);
     void remove(Transport transport);
     List<Transport> findAll();
+    void updateTransport(Transport transport);
 }

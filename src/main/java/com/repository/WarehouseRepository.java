@@ -10,7 +10,6 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
 
     List<Warehouse> findAll();
     List<Warehouse> findAllByAddress(String address);
-    List<Warehouse> findAllByName(String name);
     Warehouse findOneById(Long id);
 
 

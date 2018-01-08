@@ -57,46 +57,46 @@
     <p> </p>
     <p> </p>
     <label> Driver Transport Name:</label>
-    <input type="text" placeholder="Enter transport name" required autofocus ng-model="credentials.transportName">
+    <input type="text" placeholder="Enter transport name" required autofocus ng-model="editTransport.transportName">
     <p> </p>
 
 
     <label> Driver First Name:</label>
-    <input type="text" placeholder="Enter driver first name" required autofocus ng-model="credentials.driverFirstName">
+    <input type="text" placeholder="Enter driver first name" required autofocus ng-model="editTransport.driverFirstName">
     <p> </p>
 
     <label> Drive Last Name:</label>
-    <input type="text" placeholder="Enter driver last name" required autofocus ng-model="credentials.driverLastName">
+    <input type="text" placeholder="Enter driver last name" required autofocus ng-model="editTransport.driverLastName">
     <p> </p>
 
     <label> Contact number:</label>
-    <input type="text" placeholder="Enter driver telephone number" required autofocus ng-model="credentials.driverTelephoneName">
+    <input type="text" placeholder="Enter driver telephone number" required autofocus ng-model="editTransport.driverTelephoneName">
     <p> </p>
 
     <label> Max weight:</label>
-    <input type="email" placeholder="Enter car max weight" required autofocus ng-model="credentials.email">
+    <input type="email" placeholder="Enter car max weight" required autofocus ng-model="editTransport.email">
     <p> </p>
 
     <label> Max capacity:</label>
-    <input type="email" placeholder="Enter car max capacity" required autofocus ng-model="credentials.email">
+    <input type="email" placeholder="Enter car max capacity" required autofocus ng-model="editTransport.email">
     <p> </p>
 
     <label> Width dimension [m^3]:</label>
-    <input type="text" placeholder="Enter car width"  ng-model="credentials.xDimension" >
-    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Width" data-html="true" data-content="<img src='/picture/widthTrack.png' width='200' />">?</button>
+    <input type="text" placeholder="Enter car width"  ng-model="editTransport.xDimension" >
+    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Width" data-html="true" data-content="<img src='/picture/width.png' width='200' />">?</button>
     <p> </p>
     <label> Length dimension [m^3]:</label>
-    <input type="text" placeholder="Enter car length" ng-model="credentials.yDimension" >
-    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Length" data-html="true" data-content="<img src='/picture/lengthTrack.png' width='200' />">?</button>
+    <input type="text" placeholder="Enter car length" ng-model="editTransport.yDimension" >
+    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Length" data-html="true" data-content="<img src='/picture/length.png' width='200' />">?</button>
 
     <p> </p>
     <label> Height dimension [m^3]:</label>
-    <input type="text" placeholder="Enter car height" ng-model="credentials.zDimension" >
-    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/heightTrack.png' width='200' />">?</button>
+    <input type="text" placeholder="Enter car height" ng-model="editTransport.zDimension" >
+    <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
 
 
     <div class = "panel panel-default">
-        <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
+        <a href="#" class="btn btn-success" ng-click="save(editTransport)">Save</a>
         <a ng-href="/#!/transport" class="btn btn-warning">Cancel</a></div>
 
 

@@ -79,18 +79,67 @@
     </ul>
 </div>
 <div class="col-xs-8">
-        <form ng-submit="editcos()">
-            <h1>{{form}}</h1>
-            <table>
-                <tr>
-                    <td>First Name</td>
-                    <td><input type="text" ng-model="form.name" size="60"/></td>
-                </tr>
-            </table>
-        </form>
+
+
+
+
+                <label> Name:</label>
+                <input type="text" placeholder="Enter name" required autofocus ng-model="editPackage.name">
+                <p> </p>
+                <label> Description:</label>
+                <input type="text" placeholder="Enter package description" required ng-model="editPackage.description" >
+                <p> </p>
+                <label> Weight :</label>
+                <input type="text" placeholder="Enter package weight " ng-model="editPackage.weight" >
+                <p> </p>
+                <label> Width dimension [m^3]:</label>
+                <input type="text" placeholder="Enter package width"  ng-model="editPackage.xDimension" >
+                <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Width" data-html="true" data-content="<img src='/picture/width.png' width='200' />">?</button>
+                <p> </p>
+                <label> Length dimension [m^3]:</label>
+                <input type="text" placeholder="Enter package length" ng-model="editPackage.yDimension" >
+                <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Length" data-html="true" data-content="<img src='/picture/length.png' width='200' />">?</button>
+
+                <p> </p>
+                <label> Height dimension [m^3]:</label>
+                <input type="text" placeholder="Enter package height" ng-model="editPackage.zDimension" >
+                <button type="button" class="btn btn-sm btn-primary"  data-toggle="popover" title="Height" data-html="true" data-content="<img src='/picture/height.png' width='200' />">?</button>
+
+                <p> </p>
+                <label> Warehouse:</label>
+                <ui-select ng-model="editPackage.warehouse" theme="select2"  style="min-width: 200px;" title="Choose a warehouse">
+                <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected._name}} </ui-select-match>
+                <ui-select-choices ng-selected="editPackage.warehouse == war" ng-value="war" repeat="war in transfer | propsFilter: {_name: $select.search}">
+                    <div ng-bind-html="war._name  | highlight: $select.search"></div>
+                     <small>
+                         Address: {{war.address}} <p></p>
+                         Telephone Numer: {{war.telephoneNumber}}
+                     </small>
+                </ui-select-choices>
+                </ui-select>
+
+
+                <p> </p>
+
+                <label> User:</label>
+                <ui-select ng-model="editPackage.user" theme="select2"  style="min-width: 200px;" title="Choose a person">
+                    <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected.firstName}} {{$select.selected.lastName}}</ui-select-match>
+                    <ui-select-choices ng-selected="editPackage.user == person" ng-value="person" repeat="person in users | propsFilter: {firstName: $select.search, lastName: $select.search, firmName: $select.search  }">
+                        <div ng-bind-html="person.firstName +' '+  person.lastName | highlight: $select.search"></div>
+                        <small>
+                            Address: {{person.address}} <p></p>
+                            Firm: {{person.firmName}}
+                        </small>
+                    </ui-select-choices>
+                </ui-select>
+
+    <p></p>
+
+
+
 
     <div class = "panel panel-default">
-        <button class="btn btn-primary" ng-click="save(form)">Save</button>
+        <button class="btn btn-primary" ng-click="save(editPackage)">Save</button>
         <a ng-href="/#!/package" class="btn btn-warning">Cancel</a></div>
 
 </div>

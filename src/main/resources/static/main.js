@@ -67,8 +67,57 @@ spmit.config(function ($routeProvider) {
                 controller: 'PackageEditController',
                 templateUrl: 'editPackage.html'
             })
+        .when('/editWarehouse/:id',
+            {
+                controller: 'WarehouseEditController',
+                templateUrl: 'editWarehouse.html'
+            })
+        .when('/editUser/:id',
+            {
+                controller: 'UserEditController',
+                templateUrl: 'editUser.html'
+            })
+        .when('/editTransport/:id',
+            {
+                controller: 'TransportEditController',
+                templateUrl: 'editTransport.html'
+            })
+        .when('/packageInWarehouse/:id',
+            {
+                controller: 'packageInWarehouseController',
+                templateUrl: 'packageInWarehouse.html'
+            })
         .otherwise({redirectTo: '/package'});
 });
+
+
+spmit.controller('TransportEditController', function ($scope, $http, $location, $routeParams) {
+    $scope.editTransport = {};
+    $http({
+        method : 'GET',
+        url : '/api/transport/'+$routeParams.id
+    }).then(function successCallback(response){
+            $scope.editTransport = response.data;
+
+        },
+        function errorCallback(response) {
+        });
+
+    $scope.save = function () {
+        var request = {
+            method: 'POST',
+            url: '/api/transport/create',
+            data: $scope.editTransport
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $location.path('/transport');
+                },
+                function errorCallback(response) {
+                });
+    };
+});
+
 
 spmit.controller('TransportController', function ($scope, $window, $http,NgTableParams,$modal, $log, $location) {
     $scope.currentPage = 1;
@@ -120,6 +169,9 @@ spmit.controller('TransportController', function ($scope, $window, $http,NgTable
         $scope.credentials = {};
     };
 
+    $scope.edit = function(transport) {
+        $location.path("/editTransport/"+transport['id']);
+    };
     $scope.deleteTransport = function(transport) {
         console.log(transport);
 
@@ -156,6 +208,12 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
     };
+    $http
+        .get('/api/warehouse/all')
+        .then(function (response) {
+            $scope.transfer = response.data;
+        });
+
 
     $http
         .get('/api/warehouse/all')
@@ -174,13 +232,6 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
 
     var e = document.getElementById("startId");
 
-
-    $http
-        .get('/api/package/all')
-        .then(function (response) {
-         //   $scope.packages = response.data;
-        });
-
     $scope.selected = [];
     $scope.toggle = function (item, list) {
         var idx = list.indexOf(item);
@@ -194,19 +245,6 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     $scope.exists = function (item, list) {
         return list.indexOf(item) > -1;
     };
-/*
-    $scope.selectedItems = angular.copy($scope.warehouses.packages);
-    console.log($scope.selectedItems);
-
-    $scope.toggle = function (index) {
-        if ($scope.warehouses.packages[index].selected) {
-            $scope.selectedItems.splice(index, 1);
-        }
-        else {
-            $scope.selectedItems.splice(index, 0, $scope.warehouses.packages[index]);
-        }
-    };
-*/
 
 
     $http
@@ -271,15 +309,19 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             deferred.resolve($scope.data);
         }
     });
-    $scope.optymalize = function(){
+
+    $scope.solution = {};
+    $scope.optimise = function(){
         $scope.selectedPackages = $scope.selected;
+        $scope.solution = {
+            "transport": $scope.credentials.transport,
+            "packages": $scope.selectedPackages
+        };
         var request = {
             method: 'POST',
-            url: '/api/route/optymalize',
-            //   headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            // },
-            data: $scope.selectedPackages };
+            url: '/api/route/optimise',
+            data:  $scope.solution };
+
            $http(request)
             .then(function successCallback(response){
                     $location.path('/routeOptymalize');
@@ -287,7 +329,6 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
                 function errorCallback(response) {
                 });
     };
-
 
     $scope.save = function () {
         console.log( $scope.selected );
@@ -302,6 +343,7 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
         $http(request)
             .then(function successCallback(response){
                     $location.path('/route');
+                     console.log(request);
                 },
                 function errorCallback(response) {
                 });
@@ -342,7 +384,7 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     vm.tagTransform = function (newTag) {
         var item = {
             name: newTag,
-            address: newTag.toLowerCase()+'@email.com',
+           address: newTag.toLowerCase()+'@email.com',
 
         };
         return item;
@@ -364,6 +406,33 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     };
 
 
+});
+
+spmit.controller('UserEditController', function ($scope, $http, $location, $routeParams) {
+    $scope.editUser = {};
+    $http({
+        method : 'GET',
+        url : '/api/user/'+$routeParams.id
+    }).then(function successCallback(response){
+            $scope.editUser = response.data;
+
+        },
+        function errorCallback(response) {
+        });
+
+    $scope.save = function () {
+        var request = {
+            method: 'POST',
+            url: '/api/user/create',
+            data: $scope.editUser
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $location.path('/user');
+                },
+                function errorCallback(response) {
+                });
+    };
 });
 
 
@@ -404,9 +473,6 @@ spmit.controller('UserController', function ($scope,$q, $window, $http,NgTablePa
         var request = {
             method: 'POST',
             url: '/api/user/create',
-            //   headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            // },
             data: $scope.credentials
         };
         $http(request)
@@ -417,41 +483,6 @@ spmit.controller('UserController', function ($scope,$q, $window, $http,NgTablePa
                 });
 
         $scope.credentials = {};
-    };
-
-
-
-
-    this.animationsEnabled = true;
-    $scope.open = function (size) {
-
-        var modalInstance = $modal.open({
-            animation: this.animationsEnabled = true ,
-            templateUrl: 'userModal.html',
-            controller: 'UserInstanceCtrl',
-            backdrop: true,
-            size: size,
-            resolve: {
-
-                items: function () {
-                    return $scope.items;
-                },
-                subjects: function () {
-                    return $scope.subjects;
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            $log.info('Success');
-
-            //    $scope.selected = selectedItem;
-            // $scope.usersTable.reload();
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-            $location.path('/user');
-
-        });
     };
 
     $scope.deleteUser = function(user) {
@@ -462,18 +493,28 @@ spmit.controller('UserController', function ($scope,$q, $window, $http,NgTablePa
             url : '/api/user/remove/'+user['id']
         }).then(function successCallback(response){
                 $location.path('/user');
-                // $window.location.reload();
+                $window.location.reload();
                 vm.usersTable.reload();
             },
             function errorCallback(response) {
             });
     };
 
+    $scope.edit = function(user) {
+        $location.path("/editUser/"+user['id']);
+    };
 });
 
-spmit.controller('UserInstanceCtrl', function ($scope,$log, $modalInstance,$location,$httpParamSerializer,$http, $window) {
-    $scope.credentials = {};
+
+spmit.controller('PackageEditController', function ($scope, $http, $location, $routeParams) {
+
     $scope.transfer = {};
+    $scope.users = {};
+    $http
+        .get('/api/warehouse/all')
+        .then(function (response) {
+            $scope.transfer = response.data;
+        });
 
     $http
         .get('/api/user/all')
@@ -481,59 +522,57 @@ spmit.controller('UserInstanceCtrl', function ($scope,$log, $modalInstance,$loca
             $scope.users = response.data;
         });
 
-
-    $scope.ok = function () {
-
-        var request = {
-            method: 'POST',
-            url: '/api/users/create',
-            //   headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            // },
-            data: $scope.credentials
-        };
-        $http(request)
-            .then(function successCallback(response){
-                    $location.path('/user');
-                    $window.location.reload();
-                },
-                function errorCallback(response) {
-                });
-
-        $scope.credentials = {};
-
-        $modalInstance.close();
-
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-        $location.path('/user');
-    };
-    $location.path('/user');
-
-});
-
-
-
-spmit.controller('PackageEditController', function ($scope, $http, $location, $routeParams) {
-
-    $scope.form = {
-        name : ""
-    };
-    // console.log(pack);
+    $scope.editPackage = {};
     console.log($routeParams.id);
     $http({
         method : 'GET',
         url : '/api/package/'+$routeParams.id
     }).then(function successCallback(response){
-            console.log("jebac");
-            $scope.form.name = response.data.name;
-            console.log($scope.form);
+
+            $scope.editPackage = response.data;
         },
         function errorCallback(response) {
-            console.log("cos");
         });
+
+    $scope.save = function () {
+        var request = {
+            method: 'POST',
+            url: '/api/package/create',
+            data: $scope.editPackage
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $location.path('/package');
+                },
+                function errorCallback(response) {
+                });
+
+        $scope.credentials = {};
+    };
+
+    var vm = this;
+    vm.someGroupFn = function (item){
+
+        if (item.name[0] >= 'A' && item.name[0] <= 'M')
+            return 'From A - M';
+
+        if (item.name[0] >= 'N' && item.name[0] <= 'Z')
+            return 'From N - Z';
+
+    };
+    vm.firstLetterGroupFn = function (item){
+        return item.name[0];
+    };
+
+    vm.reverseOrderFilterFn = function(groups) {
+        return groups.reverse();
+    };
+    vm.counter = 0;
+    vm.onSelectCallback = function (item, model){
+        vm.counter++;
+        vm.eventResult = {item: item, model: model};
+    };
+
 });
 
 spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTableParams, $log, $location) {
@@ -592,7 +631,6 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
         vm.eventResult = {item: item, model: model};
     };
 
-
     $http
         .get('/api/package/all')
         .then(function (response) {
@@ -627,24 +665,9 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
         total: $scope.package.length,
 
         getData:function($defer,params) {
-            var deferred = $q.defer();
             $scope.nowy = $scope.package.slice((params.page() - 1) * params.count(), params.page() * params.count());
-         //   $defer.resolve($scope.nowy);
-         //   deferred.resolve($scope.cos);
-        }
+         }
     });
-
-    $scope.editcos = function() {
-        $http({
-            method : method,
-            url : url,
-            data : angular.toJson($scope.form),
-            headers : {
-                'Content-Type' : 'application/json'
-            }
-        }).then( _success, _error );
-
-    };
 
     $scope.deletePack = function(pack) {
         console.log(pack);
@@ -660,42 +683,59 @@ spmit.controller('PackageController', function ($scope, $window ,$q,$http,NgTabl
             function errorCallback(response) {
             });
     };
-
-
 });
 
-spmit.filter('propsFilter', function() {
-    return function(items, props) {
-        var out = [];
+spmit.controller('WarehouseEditController', function ($scope, $http, $location, $routeParams) {
+    $scope.editWarehouse = {};
+    $http({
+        method : 'GET',
+        url : '/api/warehouse/'+$routeParams.id
+    }).then(function successCallback(response){
+            $scope.editWarehouse = response.data;
 
-        if (angular.isArray(items)) {
-            var keys = Object.keys(props);
+        },
+        function errorCallback(response) {
+        });
 
-            items.forEach(function(item) {
-                var itemMatches = false;
-
-                for (var i = 0; i < keys.length; i++) {
-                    var prop = keys[i];
-                    var text = props[prop].toLowerCase();
-                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                        itemMatches = true;
-                        break;
-                    }
-                }
-                if (itemMatches) {
-                    out.push(item);
-                }
-            });
-        } else {
-            out = items;
-        }
-
-        return out;
+    $scope.save = function () {
+        var request = {
+            method: 'POST',
+            url: '/api/warehouse/create',
+            data: $scope.editWarehouse
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $location.path('/warehouse');
+                },
+                function errorCallback(response) {
+                });
     };
 });
 
+spmit.controller('packageInWarehouseController', function ($scope, $http, $location, $routeParams, $log) {
+    $scope.packageInWarehouse = {};
+    $scope.currentPage = 1;
+    $scope.pageSize = {
+        "1":"1", "2":"2", "10":"10","25":"25","50":"50"
+    };
+    $scope.sort = function(keyname){
+        $scope.sortKey = keyname;
+        $scope.reverse = !$scope.reverse;
+    };
+
+    $http({
+        method : 'GET',
+        url : '/api/warehouse/all/'+$routeParams.id
+    }).then(function successCallback(response){
+            $scope.packageInWarehouse = response.data;
+            console.log($scope.packageInWarehouse);
+        },
+        function errorCallback(response) {
+        });
 
 
+
+});
 
 spmit.controller('WarehouseController', function ($scope,$q, $window, $http, NgTableParams, $modal, $log, $location,$mdDialog) {
     $scope.transfer = {};
@@ -710,14 +750,11 @@ spmit.controller('WarehouseController', function ($scope,$q, $window, $http, NgT
         $scope.reverse = !$scope.reverse;
     };
 
-
-
     $http
         .get('/api/warehouse/all')
         .then(function (response) {
             $scope.transfer = response.data;
         });
-
 
     var vm = this;
     vm.usersTable = new NgTableParams({
@@ -727,9 +764,7 @@ spmit.controller('WarehouseController', function ($scope,$q, $window, $http, NgT
         total: $scope.transfer.length,
 
         getData:function(params) {
-            var deferred = $q.defer();
             $scope.data = $scope.transfer.slice((params.page() - 1) * params.count(), params.page() * params.count());
-            deferred.resolve($scope.data);
         }
     });
 
@@ -749,7 +784,6 @@ spmit.controller('WarehouseController', function ($scope,$q, $window, $http, NgT
         $scope.credentials = {};
     };
 
-
     $scope.deleteWarehouse = function(warehouse) {
         console.log(warehouse);
 
@@ -763,39 +797,47 @@ spmit.controller('WarehouseController', function ($scope,$q, $window, $http, NgT
             },
             function errorCallback(response) {
             });
+    };
 
-
+    $scope.edit = function(transfer) {
+        $location.path("/editWarehouse/"+transfer['id']);
     };
 
     $scope.showPackages = function(warehouse) {
-        console.log(warehouse);
+        $location.path("/packageInWarehouse/"+warehouse['id']);
 
-        $http({
-            method : 'GET',
-            url : '/api/warehouse/all/'+warehouse['id']
-        }).then(function successCallback(response){
-                $scope.packageInWarehouse = response.data;
-                console.log(response.data);
-                $location.path('/packageInWarehouse');
-                vm.newTable.reload();
-            },
-            function errorCallback(response) {
-            });
     };
-
-    vm.newTable = new NgTableParams({
-        page: 1,
-        count: 5
-    }, {
-        total: $scope.packageInWarehouse.length,
-
-        getData:function(params) {
-            var deferred = $q.defer();
-            $scope.data = $scope.packageInWarehouse.slice((params.page() - 1) * params.count(), params.page() * params.count());
-            deferred.resolve($scope.data);
-        }
-    });
 
 
 });
 
+spmit.filter('propsFilter', function() {
+    return function(items, props) {
+        var out = [];
+
+        if (angular.isArray(items)) {
+            var keys = Object.keys(props);
+
+            items.forEach(function(item) {
+                var itemMatches = false;
+
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    var text = props[prop].toLowerCase();
+                    var cos = item[prop].toString().toLowerCase().indexOf(text);
+                    if (cos !== -1) {
+                        itemMatches = true;
+                        break;
+                    }
+                }
+                if (itemMatches) {
+                    out.push(item);
+                }
+            });
+        } else {
+            out = items;
+        }
+
+        return out;
+    };
+});

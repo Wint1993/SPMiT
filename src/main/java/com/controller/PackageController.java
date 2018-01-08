@@ -55,14 +55,6 @@ public class PackageController {
         return pack;
     }
 
-   /* @RequestMapping(value = "/remove", method = DELETE)
-    //@ResponseStatus(HttpStatus.OK)
-    public Package remove( Package pack) {
-        //  packageRepository.delete(packageRepository.findOneById(id));
-        packageRepository.delete(pack);
-        return pack;
-
-    }*/
     @RequestMapping(value = "/edit/{id}", method = PUT)
     public ResponseEntity<?> edit(@PathVariable("id") Long id,@RequestBody Package pack){
 
@@ -82,8 +74,6 @@ public class PackageController {
 
         return new ResponseEntity<Package>(currentPack,HttpStatus.OK);
     }
-
-
 
     @RequestMapping(value = "/all", method = GET)
     public List<Package> findAll(){

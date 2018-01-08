@@ -28,7 +28,7 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private String name;
+    private String _name;
 
     private String address;
 
@@ -51,11 +51,11 @@ public class Warehouse {
      }
 
     public String getName() {
-        return name;
+        return _name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this._name = name;
     }
 
     public String getAddress() {

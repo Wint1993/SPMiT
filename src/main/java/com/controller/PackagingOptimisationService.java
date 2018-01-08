@@ -24,15 +24,17 @@ public class PackagingOptimisationService {
 		Container container = new Container(containerDimensions);
 
 		List<PackageDto> packagesDimensions = packages.stream()
-			.map(PackageDto::new)
-			.sorted(BOX_VOLUME_DESCENDING)
-			.collect(toList());
+				.map(PackageDto::new)
+				.sorted(BOX_VOLUME_DESCENDING)
+				.collect(toList());
 
 		Packager packager = new Packager(newArrayList(container));
 
-//		packagesDimensions.stream()
-//			.map(packager.pack())
-
+		for (PackageDto item : packagesDimensions) {
+			if (null == packager.pack(newArrayList(item.getBox()))) {
+				item.makeUnavailable();
+			}
+		}
 		int counter = 1;
 
 		while (packager.pack(packagesDimensions.stream().filter(PackageDto::isAccepted).map(PackageDto::getBox).collect(toList())) == null) {

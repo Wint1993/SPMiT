@@ -12,4 +12,5 @@ public interface WarehouseService {
     Warehouse create(Warehouse warehouse);
     void remove(Warehouse warehouse);
     public List<Warehouse> findAll();
+    void updateWarehouse(Warehouse warehouse);
 }

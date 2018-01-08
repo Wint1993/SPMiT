@@ -51,6 +51,30 @@ public class Transport {
     @JsonIgnore
     private Warehouse currentWarehouse;
 
+    public String getDriverFirstName() {
+        return driverFirstName;
+    }
+
+    public void setDriverFirstName(String driverFirstName) {
+        this.driverFirstName = driverFirstName;
+    }
+
+    public String getDriverLastName() {
+        return driverLastName;
+    }
+
+    public void setDriverLastName(String driverLastName) {
+        this.driverLastName = driverLastName;
+    }
+
+    public String getDriverTelephoneName() {
+        return driverTelephoneName;
+    }
+
+    public void setDriverTelephoneName(String driverTelephoneName) {
+        this.driverTelephoneName = driverTelephoneName;
+    }
+
     public Long getId() {
         return id;
     }
