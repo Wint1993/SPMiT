@@ -9,5 +9,8 @@
         <module name="SPMiT" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SPMiT" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
