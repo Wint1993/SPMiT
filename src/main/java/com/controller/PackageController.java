@@ -6,6 +6,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,6 +80,13 @@ public class PackageController {
     public List<Package> findAll(){
 	        return packageService.findAll();
     }
+
+	@RequestMapping(value = "/available", method = GET)
+	public List<Package> findAvailable(){
+		return packageService.findAll().stream()
+			.filter(p -> null == p.getRoute())
+			.collect(Collectors.toList());
+	}
 
     @GetMapping(value = "/{id}")
 	public Package findOne(@PathVariable Long id) {

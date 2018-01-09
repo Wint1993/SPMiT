@@ -1,19 +1,27 @@
 package com.controller;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.model.Package;
 import com.model.Warehouse;
 import com.repository.PackageRepository;
 import com.repository.WarehouseRepository;
 import com.service.WarehouseService;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/api/warehouse")
@@ -53,7 +61,9 @@ public class WarehouseController {
 
     @RequestMapping(value = "/all/{id}", method = GET)
     public List<Package> findAllIn(@PathVariable("id") Long id){
-        return packageRepository.findAllByWarehouseId(id);
+        return packageRepository.findAllByWarehouseId(id).stream()
+				.filter(p -> null == p.getRoute())
+				.collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/remove/{id}", method = DELETE)

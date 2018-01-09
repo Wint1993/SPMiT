@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -48,8 +47,7 @@ public class Route {
     @OneToOne
     private Transport transport;
 
-    @OneToMany
-    @JoinTable(name = "route_packages")
+    @OneToMany(mappedBy = "route")
     private List<Package> packages = new ArrayList<>();
 
     @JsonIgnore
