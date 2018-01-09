@@ -9,9 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.model.Package;
 import com.model.Route;
-import com.model.Transport;
 import com.repository.RouteRepository;
 import com.service.RouteService;
 
@@ -50,8 +48,8 @@ public class RouteController {
     //@GetMapping("/optimise")
     @PostMapping(path= "/optimise")
    // @RequestMapping(value = "/optimise", method = POST)
-	public TransportPackagingDto optimise(@RequestBody InputDto inputDto) {
+	public Route optimise(@RequestBody InputDto inputDto) {
 
-    	return packagingOptimisationService.optimise(inputDto.getTransport(), inputDto.getPackages());
+    	return packagingOptimisationService.optimise(inputDto);
 	}
 }

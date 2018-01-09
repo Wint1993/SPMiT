@@ -59,7 +59,7 @@ spmit.config(function ($routeProvider) {
             })
         .when('/routeOptymalize',
             {
-                controller: 'RouteController',
+                controller: 'RouteOptymalizeController',
                 templateUrl: 'routeOptymalize.html'
             })
         .when('/editPackage/:id',
@@ -189,8 +189,48 @@ spmit.controller('TransportController', function ($scope, $window, $http,NgTable
 
 });
 
+spmit.service('dataService', function() {
+        // private variable
+        var _dataObj = {};
+        // public API
+        this.dataObj = _dataObj;
+    });
 
-spmit.controller('RouteController', function ($scope, $window, $http,NgTableParams,$modal, $log, $location) {
+
+spmit.controller('RouteOptymalizeController', function ($scope, $http, $location, dataService) {
+    var request = {
+        method: 'POST',
+        url: '/api/route/optimise',
+        data:  dataService.dataObj};
+
+    $http(request)
+        .then(function successCallback(response){
+
+                $scope.route = response.data;
+            },
+            function errorCallback(response) {
+            });
+
+    $scope.save = function () {
+        console.log( $scope.selected );
+        var request = {
+            method: 'POST',
+            url: '/api/route/create',
+            data: $scope.route
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $location.path('/route');
+                    console.log(request);
+                },
+                function errorCallback(response) {
+                });
+
+        $scope.credentials = {};
+    };
+});
+
+spmit.controller('RouteController', function ($scope, $window, $http,NgTableParams,$modal, $log, $location, dataService) {
 
     $scope.transfer = {};
     $scope.transport = {};
@@ -199,6 +239,7 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     $scope.selected = [];
     $scope.accpetedPackage = {};
     $scope.noacceptedPackage = {};
+    $scope.route = {};
     $scope.currentPage = 1;
     $scope.pageSize = {
         "1":"1", "2":"2", "10":"10","25":"25","50":"50"
@@ -227,9 +268,6 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             })
         });
 
-
-
-
     var e = document.getElementById("startId");
 
     $scope.selected = [];
@@ -247,11 +285,11 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
     };
 
 
-    $http
-        .get('/api/package/all')
-        .then(function (response) {
-            $scope.accpetedPackage = response.data;
-        });
+    // $http
+    //     .get('/api/package/all')
+    //     .then(function (response) {
+    //         $scope.accpetedPackage = response.data;
+    //     });
 
     var vm = this;
     vm.accepted = new NgTableParams({
@@ -269,11 +307,11 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
 
 
 
-    $http
-        .get('/api/package/all')
-        .then(function (response) {
-            $scope.noacceptedPackage = response.data;
-        });
+    // $http
+    //     .get('/api/package/all')
+    //     .then(function (response) {
+    //         $scope.noacceptedPackage = response.data;
+    //     });
 
 
     vm.noaccepted = new NgTableParams({
@@ -315,19 +353,13 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
         $scope.selectedPackages = $scope.selected;
         $scope.solution = {
             "transport": $scope.credentials.transport,
+            "warehouseStart": $scope.credentials.warehouseStart,
+            "warehouseEnd": $scope.credentials.warehouseEnd,
+            "description": $scope.credentials.description,
             "packages": $scope.selectedPackages
         };
-        var request = {
-            method: 'POST',
-            url: '/api/route/optimise',
-            data:  $scope.solution };
-
-           $http(request)
-            .then(function successCallback(response){
-                    $location.path('/routeOptymalize');
-                },
-                function errorCallback(response) {
-                });
+        dataService.dataObj = $scope.solution;
+        $location.path('/routeOptymalize');
     };
 
     $scope.save = function () {
@@ -819,7 +851,7 @@ spmit.filter('propsFilter', function() {
             var keys = Object.keys(props);
 
             items.forEach(function(item) {
-                var itemMatches = false;
+                var FitemMatches = false;
 
                 for (var i = 0; i < keys.length; i++) {
                     var prop = keys[i];

@@ -54,28 +54,37 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="pack in accpetedPackage">
+        <tr ng-repeat="pack in route.packages">
             <td title="'Accepted package'" >
                 {{pack.name}}</td>
         </tr>
         </tbody>
     </table>
 
-    <table ng-table="vm.noaccepted" class="table">
-        <thead>
-        <tr>
-            <th >Noaccepted package
-            </th>
+    <div>
+        <h1>Początek: {{route.warehouseStart.name}}</h1>
+    </div>
+    <div>
+        <h1>Koniec: {{route.warehouseEnd.name}}</h1>
+    </div>
+    <div>
+        <h1>Opis: {{route.description}}</h1>
+    </div>
+    <!--<table ng-table="vm.noaccepted" class="table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th >Noaccepted package-->
+            <!--</th>-->
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="pack in noacceptedPackage">
-            <td title="'Noaccepted package'" >
-                {{pack.name}}</td>
-        </tr>
-        </tbody>
-    </table>
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr ng-repeat="pack in noacceptedPackage">-->
+            <!--<td title="'Noaccepted package'" >-->
+                <!--{{pack.name}}</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+    <!--</table>-->
 
 
     <div class = "panel panel-default">

@@ -12,13 +12,17 @@ import com.github.skjolberg.packing.Container;
 import com.github.skjolberg.packing.Dimension;
 import com.github.skjolberg.packing.Packager;
 import com.model.Package;
+import com.model.Route;
 import com.model.Transport;
 
 
 @Service
 public class PackagingOptimisationService {
 
-	public TransportPackagingDto optimise(Transport transport, List<Package> packages) {
+	public Route optimise(InputDto inputDto) {
+
+		Transport transport = inputDto.getTransport();
+		List<Package> packages = inputDto.getPackages();
 
 		Dimension containerDimensions = wrapTransportDimensions(transport);
 		Container container = new Container(containerDimensions);
@@ -42,7 +46,22 @@ public class PackagingOptimisationService {
 			counter++;
 		}
 
-		return new TransportPackagingDto(transport, packagesDimensions);
+		List<Long> acceptedPackagesIds = packagesDimensions.stream()
+			.filter(PackageDto::isAccepted)
+			.map(PackageDto::getPackageId)
+			.collect(toList());
+
+		Route route = new Route();
+
+		route.setWarehouseStart(inputDto.getWarehouseStart());
+		route.setWarehouseEnd(inputDto.getWarehouseEnd());
+		route.setPackages(packages.stream()
+		.filter(p -> acceptedPackagesIds.contains(p.getId()))
+		.collect(toList()));
+		route.setDescription(inputDto.getDescription());
+		route.setTransport(transport);
+
+		return route;
 	}
 
 	private static final Comparator<PackageDto> BOX_VOLUME_DESCENDING = (o1, o2) -> o2.getBox().getVolume() - o1.getBox().getVolume();

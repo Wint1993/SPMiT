@@ -1,20 +1,7 @@
 package com.controller;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import com.model.Package;
-import com.model.Transport;
-
-
 public class PackagingOptimisationServiceTest {
-
+/*
 	private PackagingOptimisationService packagingOptimisationService = new PackagingOptimisationService();
 
 	@Test
@@ -142,5 +129,5 @@ public class PackagingOptimisationServiceTest {
 		package1.setzDimension(zDimension);
 		return package1;
 	}
-
+*/
 }

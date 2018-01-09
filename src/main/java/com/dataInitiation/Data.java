@@ -119,6 +119,9 @@ public class Data implements ApplicationListener<ContextRefreshedEvent> {
        Transport transport = new Transport();
        transport.setTransportName("Transport nazwa");
        transport.setMaxCapacity(12300.0);
+       transport.setxDimension(100d);
+       transport.setyDimension(100d);
+       transport.setzDimension(100d);
        transport.setMaxWeight(100.0);
        transportRepository.save(transport);
 
