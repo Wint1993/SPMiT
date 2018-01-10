@@ -47,9 +47,9 @@ public class Transport {
     @JsonIgnore
     private Route route;
 
-    @ManyToOne
-    @JsonIgnore
-    private Warehouse currentWarehouse;
+    //@ManyToOne
+   // @JsonIgnore
+  //  private Warehouse currentWarehouse;
 
     public String getDriverFirstName() {
         return driverFirstName;
@@ -139,11 +139,11 @@ public class Transport {
         this.route = route;
     }
 
-    public Warehouse getCurrentWarehouse() {
-        return currentWarehouse;
-    }
+   // public Warehouse getCurrentWarehouse() {
+   //     return currentWarehouse;
+  //  }
 
-    public void setCurrentWarehouse(Warehouse currentWarehouse) {
-        this.currentWarehouse = currentWarehouse;
-    }
+   // public void setCurrentWarehouse(Warehouse currentWarehouse) {
+      //  this.currentWarehouse = currentWarehouse;
+   // }
 }

@@ -1,7 +1,11 @@
 package com.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.model.Package;
 import com.model.Transport;
 import com.model.Warehouse;
@@ -14,6 +18,15 @@ public class InputDto {
 	private Warehouse warehouseStart;
 	private Warehouse warehouseEnd;
 	private String description;
+	private String startRoute;
+	private String endRoute;
+
+	//@JsonSerialize(using = ToStringSerializer.class)
+	//private LocalDateTime startRoute1;
+
+//	@JsonSerialize(using = ToStringSerializer.class)
+	//private LocalDateTime endRoute1;
+
 
 	public Transport getTransport() {
 
@@ -64,4 +77,36 @@ public class InputDto {
 
 		this.warehouseStart = warehouseStart;
 	}
+
+	public String getStartRoute() {
+		return startRoute;
+	}
+
+	public void setStartRoute(String startRoute) {
+		this.startRoute = startRoute;
+	}
+
+	public String getEndRoute() {
+		return endRoute;
+	}
+
+	public void setEndRoute(String endRoute) {
+		this.endRoute = endRoute;
+	}
+
+/*	public LocalDateTime getStartRoute1() {
+		return startRoute1;
+	}
+
+	public void setStartRoute1(LocalDateTime startRoute1) {
+		this.startRoute1 = startRoute1;
+	}
+
+	public LocalDateTime getEndRoute1() {
+		return endRoute1;
+	}
+
+	public void setEndRoute1(LocalDateTime endRoute1) {
+		this.endRoute1 = endRoute1;
+	} */
 }

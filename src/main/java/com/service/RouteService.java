@@ -12,4 +12,6 @@ public interface RouteService {
     public List<Route> findAll();
     void remove(Route route);
     Route create(Route route);
+
+    void updateRoute(Route currentRoute);
 }

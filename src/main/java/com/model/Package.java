@@ -43,8 +43,9 @@ public class Package {
 
     private Double capacity;
 
+    @JsonIgnore
     private LocalDateTime whenTake;
-
+    @JsonIgnore
     private String timeString;
 
 

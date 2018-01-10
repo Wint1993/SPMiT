@@ -38,6 +38,11 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
+    public void updateRoute(Route route){
+        routeRepository.save(route);
+    }
+
+    @Override
     public void remove(Route route) {
         routeRepository.delete(route);
     }

@@ -14,6 +14,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,12 +40,16 @@ public class Route {
 
     private String description;
 
+    private String startRoute;
 
-    @JsonIgnore
-    private LocalDateTime startRoute;
+    private String endRoute;
 
-    @JsonIgnore
-    private LocalDateTime endRoute;
+   /* @JsonSerialize(using = ToStringSerializer.class)
+  //  @JsonDeserialize(using = ParseDeserializer.class)
+    private LocalDateTime startRoute1;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    private LocalDateTime endRoute1;*/
 
     @OneToOne
     private Transport transport;

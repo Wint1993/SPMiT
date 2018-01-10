@@ -1,21 +1,20 @@
 package com.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.model.Package;
+import com.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.model.Route;
 import com.repository.RouteRepository;
 import com.service.RouteService;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/api/route")
@@ -26,6 +25,9 @@ public class RouteController {
 
     @Autowired
     private RouteRepository routeRepository;
+
+    @Autowired
+    private PackageRepository packageRepository;
 
     @Autowired
 	private PackagingOptimisationService packagingOptimisationService;
@@ -49,11 +51,36 @@ public class RouteController {
         return route;
     }
 
-    //@GetMapping("/optimise")
     @PostMapping(path= "/optimise")
-   // @RequestMapping(value = "/optimise", method = POST)
 	public Route optimise(@RequestBody InputDto inputDto) {
 
     	return packagingOptimisationService.optimise(inputDto);
 	}
+
+    @RequestMapping(value = "/edit/{id}", method = PUT)
+    public ResponseEntity<?> edit(@PathVariable("id") Long id, @RequestBody Route route){
+
+        Route currentRoute = routeRepository.findOneById(id);
+        currentRoute.setWarehouseStart(route.getWarehouseStart());
+        currentRoute.setWarehouseEnd(route.getWarehouseEnd());
+        currentRoute.setDescription(route.getDescription());
+        currentRoute.setStartRoute(route.getStartRoute());
+        currentRoute.setEndRoute(route.getEndRoute());
+        currentRoute.setTransport(route.getTransport());
+        currentRoute.setPackages(route.getPackages());
+        routeService.updateRoute(currentRoute);
+
+        return new ResponseEntity<Route>(currentRoute, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}")
+    public Route findOne(@PathVariable Long id) {
+
+        return routeRepository.findOne(id);
+    }
+
+    @RequestMapping(value = "/all/{id}", method = GET)
+    public List<Package> findAllIn(@PathVariable("id") Long id){
+        return packageRepository.findAllByRouteId(id);
+    }
 }

@@ -3,6 +3,8 @@ package com.controller;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -60,6 +62,10 @@ public class PackagingOptimisationService {
 		.collect(toList()));
 		route.setDescription(inputDto.getDescription());
 		route.setTransport(transport);
+		route.setStartRoute(inputDto.getStartRoute());
+		route.setEndRoute(inputDto.getEndRoute());
+       // route.setStartRoute1(getLocalDateTime(inputDto.getStartRoute()));
+      //  route.setEndRoute1(getLocalDateTime(inputDto.getEndRoute()));
 
 		return route;
 	}
@@ -69,5 +75,10 @@ public class PackagingOptimisationService {
 	private Dimension wrapTransportDimensions(Transport transport) {
 
 		return new Dimension(transport.getxDimension().intValue(), transport.getyDimension().intValue(), transport.getzDimension().intValue());
+	}
+
+	private LocalDateTime getLocalDateTime(String str){
+		ZonedDateTime zdt = ZonedDateTime.parse(str);
+		return zdt.toLocalDateTime();
 	}
 }

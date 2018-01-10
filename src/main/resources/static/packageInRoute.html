@@ -58,7 +58,7 @@
         <div class="form-group">
             <label > <img  src="picture/unnamed.png" alt="Lupa" style="width:33px;height:33px;"> </label>
             <input type="text" ng-model="search" class="form-control" placeholder="Search">
-            <strong> &nbsp; &nbsp; &nbsp;Package in Warehouse: {{ packageInWarehouse[0].warehouse.name }} <strong>
+            Package in Route
         </div>
     </form>
 
@@ -90,13 +90,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr dir-paginate="pack in packageInWarehouse|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage">
+        <tr dir-paginate="pack in packageInRoute|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage">
             <td title="'Package name'"  >
                 {{pack.name}}</td>
             <td title="'Owner'">
                 {{pack.user.firstName}} {{pack.user.lastName}}   </td>
             <td title="'Description'" >
                 {{pack.description}}</td>
+            <td title="'Package time accepted'" >
+                {{pack.timeString}}</td>
             <td title="'Capacity'" >
                 {{pack.capacity}}</td>
             <td title="'Warehouse'" >
@@ -130,5 +132,6 @@
             direction-links="true"
             boundary-links="true" >
     </dir-pagination-controls>
+
 
 </div>

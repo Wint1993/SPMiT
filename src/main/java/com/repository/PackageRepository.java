@@ -16,6 +16,6 @@ public interface PackageRepository extends JpaRepository<Package, Long> {
     List<Package> findAllByRoute(Route route);
     List<Package> findAllByWarehouse(Warehouse warehouse);
     Package findOneById(Long id);
-
     List<Package> findAllByWarehouseId(long id);
+    List<Package> findAllByRouteId(long id);
 }

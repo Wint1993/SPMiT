@@ -47,11 +47,6 @@ spmit.config(function ($routeProvider) {
                 controller: 'TransportController',
                 templateUrl: 'addTransport.html'
             })
-        .when('/packageInWarehouse',
-            {
-                controller: 'WarehouseController',
-                templateUrl: 'packageInWarehouse.html'
-            })
         .when('/addPackage',
             {
                 controller: 'PackageController',
@@ -87,7 +82,21 @@ spmit.config(function ($routeProvider) {
                 controller: 'packageInWarehouseController',
                 templateUrl: 'packageInWarehouse.html'
             })
-        .otherwise({redirectTo: '/package'});
+        .when('/packageInRoute/:id',
+            {
+                controller: 'packageInRouteController',
+                templateUrl: 'packageInRoute.html'
+            })
+        .when('/editRoute/:id',
+            {
+                controller: 'RouteEditController',
+                templateUrl: 'editRoute.html'
+            })
+        .when('/home',
+            {
+                templateUrl: 'homePage.html'
+            })
+        .otherwise({redirectTo: '/home'});
 });
 
 
@@ -198,6 +207,15 @@ spmit.service('dataService', function() {
 
 
 spmit.controller('RouteOptymalizeController', function ($scope, $http, $location, dataService) {
+    $scope.sort = function(keyname){
+        $scope.sortKey = keyname;
+        $scope.reverse = !$scope.reverse;
+    };
+    $scope.currentPage = 1;
+    $scope.pageSize = {
+        "1":"1", "2":"2", "10":"10","25":"25","50":"50"
+    };
+
     var request = {
         method: 'POST',
         url: '/api/route/optimise',
@@ -230,31 +248,45 @@ spmit.controller('RouteOptymalizeController', function ($scope, $http, $location
     };
 });
 
-spmit.controller('RouteController', function ($scope, $window, $http,NgTableParams,$modal, $log, $location, dataService) {
 
-    $scope.transfer = {};
-    $scope.transport = {};
-    $scope.warehouses = {};
-    //$scope.packages = {};
-    $scope.selected = [];
-    $scope.accpetedPackage = {};
-    $scope.noacceptedPackage = {};
-    $scope.route = {};
+spmit.controller('packageInRouteController', function ($scope, $http, $location, $routeParams, $log) {
+    $scope.packageInRoute = {};
     $scope.currentPage = 1;
     $scope.pageSize = {
         "1":"1", "2":"2", "10":"10","25":"25","50":"50"
     };
-    $scope.selectedPackages = {};
     $scope.sort = function(keyname){
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
     };
-    $http
-        .get('/api/warehouse/all')
-        .then(function (response) {
-            $scope.transfer = response.data;
+
+    $http({
+        method : 'GET',
+        url : '/api/route/all/'+$routeParams.id
+    }).then(function successCallback(response){
+            $scope.packageInRoute = response.data;
+            console.log($scope.packageInRoute);
+        },
+        function errorCallback(response) {
         });
 
+
+
+});
+
+
+
+spmit.controller('RouteEditController', function ($scope, $http, $location, $routeParams) {
+
+    $scope.transport = {};
+    $scope.warehouses = {};
+    $scope.editRoute = {};
+
+    $http
+        .get('/api/transport/all')
+        .then(function (response) {
+            $scope.transport = response.data;
+        });
 
     $http
         .get('/api/warehouse/all')
@@ -268,7 +300,69 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             })
         });
 
-    var e = document.getElementById("startId");
+    $http({
+        method : 'GET',
+        url : '/api/route/'+$routeParams.id
+    }).then(function successCallback(response){
+            $scope.editRoute = response.data;
+
+        },
+        function errorCallback(response) {
+        });
+
+    $scope.save = function () {
+        var request = {
+            method: 'POST',
+            url: '/api/route/create',
+            data: $scope.editRoute
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $location.path('/route');
+                },
+                function errorCallback(response) {
+                });
+    };
+});
+
+
+spmit.controller('RouteController', function ($scope, $mdDialog, $window, $http,NgTableParams,$modal, $log, $location, dataService) {
+
+    $scope.transfer = {};
+    $scope.transport = {};
+    $scope.warehouses = {};
+    $scope.packageFind = {};
+    $scope.selected = [];
+    $scope.accpetedPackage = {};
+    $scope.noacceptedPackage = {};
+    $scope.route = {};
+    $scope.currentPage = 1;
+    $scope.pageSize = {
+        "1":"1", "2":"2", "10":"10","25":"25","50":"50"
+    };
+    $scope.selectedPackages = {};
+
+    $scope.sort = function(keyname){
+        $scope.sortKey = keyname;
+        $scope.reverse = !$scope.reverse;
+    };
+    $http
+        .get('/api/warehouse/all')
+        .then(function (response) {
+            $scope.transfer = response.data;
+        });
+
+    $http
+        .get('/api/warehouse/all')
+        .then(function (response) {
+            $scope.warehouses = response.data;
+            $scope.warehouses.forEach(function (warehouse) {
+                $http.get('/api/warehouse/all/'+warehouse['id'])
+                    .then(function (response) {
+                        warehouse['packages'] = response.data;
+                    });
+            })
+        });
 
     $scope.selected = [];
     $scope.toggle = function (item, list) {
@@ -278,18 +372,13 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
         }
         else {
             list.push(item);
+
         }
     };
     $scope.exists = function (item, list) {
         return list.indexOf(item) > -1;
     };
 
-
-    // $http
-    //     .get('/api/package/all')
-    //     .then(function (response) {
-    //         $scope.accpetedPackage = response.data;
-    //     });
 
     var vm = this;
     vm.accepted = new NgTableParams({
@@ -304,29 +393,6 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             deferred.resolve($scope.data);
         }
     });
-
-
-
-    // $http
-    //     .get('/api/package/all')
-    //     .then(function (response) {
-    //         $scope.noacceptedPackage = response.data;
-    //     });
-
-
-    vm.noaccepted = new NgTableParams({
-        page: 1,
-        count: 5
-    }, {
-        total: $scope.noacceptedPackage.length,
-
-        getData:function(params) {
-            var deferred = $q.defer();
-            $scope.data = $scope.noacceptedPackage.slice((params.page() - 1) * params.count(), params.page() * params.count());
-            deferred.resolve($scope.data);
-        }
-    });
-
 
     $http
         .get('/api/route/all')
@@ -348,6 +414,11 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
         }
     });
 
+    $scope.showPackages = function(route) {
+        $location.path("/packageInRoute/"+route['id']);
+
+    };
+
     $scope.solution = {};
     $scope.optimise = function(){
         $scope.selectedPackages = $scope.selected;
@@ -356,20 +427,24 @@ spmit.controller('RouteController', function ($scope, $window, $http,NgTablePara
             "warehouseStart": $scope.credentials.warehouseStart,
             "warehouseEnd": $scope.credentials.warehouseEnd,
             "description": $scope.credentials.description,
-            "packages": $scope.selectedPackages
+            "packages": $scope.selectedPackages,
+            "startRoute": $scope.credentials.dateTime,
+            "endRoute": $scope.credentials.dateTime1
         };
         dataService.dataObj = $scope.solution;
         $location.path('/routeOptymalize');
     };
 
+    $scope.edit = function(route) {
+        $location.path("/editRoute/"+route['id']);
+    };
+
     $scope.save = function () {
-        console.log( $scope.selected );
+
         var request = {
             method: 'POST',
             url: '/api/route/create',
-            //   headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            // },
+
             data: $scope.credentials
         };
         $http(request)

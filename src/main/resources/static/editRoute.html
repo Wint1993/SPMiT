@@ -124,103 +124,103 @@
     <p> </p>
     <p> </p>
 
-   <label> Warehouse Start:</label>
-    <select ng-model="credentials.warehouseStart">
-        <option ng-selected="credentials.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
+    <label> Warehouse Start:</label>
+    <select ng-model="editRoute.warehouseStart">
+        <option ng-selected="editRoute.warehouseStart == x" id="startId" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
     </select>
 
     <div class = "panel panel-success">
-    <form class="form-inline">
-        <div class="form-group">
-            <img  src="picture/unnamed.png" alt="Lupa" style="width:33px;height:33px;"> <input type="text" ng-model="searchText" class="form-control" placeholder="Search">
+        <form class="form-inline">
+            <div class="form-group">
+                <img  src="picture/unnamed.png" alt="Lupa" style="width:33px;height:33px;"> <input type="text" ng-model="searchText" class="form-control" placeholder="Search">
+            </div>
+        </form>
+        <div flex="800" flex-gt-md="100" layout="column">
+            <div ng-if="editRoute.warehouseStart">
+                <div layout="row" layout-wrap flex>
+
+                    <div flex="800"  ng-model="selected.packages" ng-repeat="item in editRoute.warehouseStart.packages| filter:searchText" >
+                        <!-- <div ng-model="selected.packages" dir-paginate="item in credentials.warehouseStart.packages" current-page="currentPage"> -->
+
+                        <div class = "panel panel-success" align="center">
+                            <input type="checkbox"
+                                   ng-checked="exists(item, selected)"
+                                   ng-click="toggle(item, selected)">
+                            <strong>{{ item.name }} </strong>
+
+                            </sm-button>
+                            &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;
+                            <script>
+                                $(document).ready(function(){
+                                    $('[data-toggle="popover"]').popover();
+                                });
+                            </script>
+                            <p> </p>
+                            <small>
+                                <strong>Owner</strong> {{ item.user.firstName }}  {{ item.user.lastName }} <p> </p>
+                                <strong>Capacity</strong> {{item.capacity}}
+                            </small>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>
-    <div flex="800" flex-gt-md="100" layout="column">
-    <div ng-if="credentials.warehouseStart">
-        <div layout="row" layout-wrap flex>
-
-          <div flex="800"  ng-model="selected.packages" ng-repeat="item in credentials.warehouseStart.packages| filter:searchText" >
-       <!-- <div ng-model="selected.packages" dir-paginate="item in credentials.warehouseStart.packages" current-page="currentPage"> -->
-
-              <div class = "panel panel-success" align="center">
-               <input type="checkbox"
-                     ng-checked="exists(item, selected)"
-                     ng-click="toggle(item, selected)">
-                  <strong>{{ item.name }} </strong>
-
-              </sm-button>
-              &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;
-              <script>
-                  $(document).ready(function(){
-                      $('[data-toggle="popover"]').popover();
-                  });
-              </script>
-              <p> </p>
-              <small>
-                  <strong>Owner</strong> {{ item.user.firstName }}  {{ item.user.lastName }} <p> </p>
-                  <strong>Capacity</strong> {{item.capacity}}
-              </small>
-              </div>
-
-
-          </div>
-        </div>
-      </div>
-    </div>
 
     </div>
-      <md-chips ng-model="selectedItems" readonly="readonly">
-          <md-chip-template>
-              {{$chip.name}}
-          </md-chip-template>
-      </md-chips>
+    <md-chips ng-model="selectedItems" readonly="readonly">
+        <md-chip-template>
+            {{$chip.name}}
+        </md-chip-template>
+    </md-chips>
 
-      <label> Warehouse End:</label>
-      <select ng-model="credentials.warehouseEnd">
-          <option ng-selected="credentials.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
-      </select>
-      <p> </p>
+    <label> Warehouse End:</label>
+    <select ng-model="editRoute.warehouseEnd">
+        <option ng-selected="editRoute.warehouseEnd == x" ng-value="x" ng-repeat="x in warehouses" >{{x.name}}</option>
+    </select>
+    <p> </p>
 
-      <label> Description:</label>
-      <input type="text" placeholder="Enter route description" required autofocus ng-model="credentials.description">
-      <p> </p>
+    <label> Description:</label>
+    <input type="text" placeholder="Enter route description" required autofocus ng-model="editRoute.description">
+    <p> </p>
 
-      <label> Transport:</label>
-      <select ng-model="credentials.transport">
-          <option ng-selected="credentials.transport == x" ng-value="x" ng-repeat="x in transport" >{{x.transportName}}</option>
-      </select>
+    <label> Transport:</label>
+    <select ng-model="editRoute.transport">
+        <option ng-selected="editRoute.transport == x" ng-value="x" ng-repeat="x in transport" >{{x.transportName}}</option>
+    </select>
 
-      <p> </p>
-      <div class="panel panel-default">
-          <label>   Start Date </label>
-      <input mdc-datetime-picker="" date="true" time="true" id="datetime" placeholder="Date"
-             show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="credentials.dateTime"
-             class=" dtp-no-msclear dtp-input md-input" type="text">
-      </div>
-      <p> </p>
-      <div class="panel panel-default">
+    <p> </p>
+    <div class="panel panel-default">
+        <label>   Start Date </label>
+        <input mdc-datetime-picker="" date="true" time="true" id="datetime" placeholder="Date"
+               show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="editRoute.dateTime"
+               class=" dtp-no-msclear dtp-input md-input" type="text">
+    </div>
+    <p> </p>
+    <div class="panel panel-default">
         <label> End Date </label>
-      <input mdc-datetime-picker="" date="true" time="true" id="datetime1" placeholder="Date"
-             show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="credentials.dateTime1"
-             class=" dtp-no-msclear dtp-input md-input" type="text">
-      </div>
+        <input mdc-datetime-picker="" date="true" time="true" id="datetime1" placeholder="Date"
+               show-todays-date="" minutes="true" min-date="date" show-icon="true" ng-model="editRoute.dateTime1"
+               class=" dtp-no-msclear dtp-input md-input" type="text">
+    </div>
 
-      <div flex="100">
-          <h2 class="md-title">Selected Items</h2>
-          <code style="display: block; padding: 8px;">{{selected.name | json}}</code>
-      </div>
+    <div flex="100">
+        <h2 class="md-title">Selected Items</h2>
+        <code style="display: block; padding: 8px;">{{selected.name | json}}</code>
+    </div>
 
-      <div class = "panel panel-default">
-          <a href="#" class="btn btn-success" ng-click="save(credentials)">Save</a>
-          <a ng-href="/#!/route" class="btn btn-warning">Cancel</a>
-          <a href="/#!/routeOptymalize" class="btn btn-primary" ng-click="optimise(credentials)" >Optymalize</a></div>
-
-
-  </div>
+    <div class = "panel panel-default">
+        <a href="#" class="btn btn-success" ng-click="save(editRoute)">Save</a>
+        <a ng-href="/#!/route" class="btn btn-warning">Cancel</a>
 
 
-  <script>
-      $(document).ready(function(){
-          $('[data-toggle="popover"]').popover();
-      });
-  </script>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
