@@ -1,6 +1,7 @@
 package com.controller;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.reverse;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.github.skjolberg.packing.Box;
 import com.github.skjolberg.packing.Container;
 import com.github.skjolberg.packing.Dimension;
 import com.github.skjolberg.packing.Packager;
@@ -35,31 +37,34 @@ public class PackagingOptimisationService {
 				.collect(toList());
 
 		Packager packager = new Packager(newArrayList(container));
-
+		List<PackageDto> r = newArrayList();
 		for (PackageDto item : packagesDimensions) {
-			if (null == packager.pack(newArrayList(item.getBox()))) {
-				item.makeUnavailable();
+			if (null != packager.pack(newArrayList(item.getBox()))) {
+				r.add(item);
 			}
 		}
-		int counter = 1;
+//		int counter = 1;
+//
+//		while (packager.pack(getAvailableBoxes(packagesDimensions)) == null) {
+//			packagesDimensions.get(packagesDimensions.size() - counter).makeUnavailable();
+//			counter++;
+//		}
+//		do {
+//			packagesDimensions.get(packagesDimensions.size() - counter).makeUnavailable();
+//			counter++;
+//		} while(packager.pack(getAvailableBoxes(packagesDimensions)) != null);
 
-		while (packager.pack(packagesDimensions.stream().filter(PackageDto::isAccepted).map(PackageDto::getBox).collect(toList())) == null) {
-			packagesDimensions.get(packagesDimensions.size() - counter).makeUnavailable();
-			counter++;
-		}
+		List<PackageDto> optimised = optimise(packager, newArrayList(), r);
 
-		List<Long> acceptedPackagesIds = packagesDimensions.stream()
-			.filter(PackageDto::isAccepted)
-			.map(PackageDto::getPackageId)
+		List<Package> acceptedPackages = packages.stream()
+			.filter(p -> optimised.stream().anyMatch(optim -> optim.getPackageId().equals(p.getId())))
 			.collect(toList());
 
 		Route route = new Route();
 
 		route.setWarehouseStart(inputDto.getWarehouseStart());
 		route.setWarehouseEnd(inputDto.getWarehouseEnd());
-		route.setPackages(packages.stream()
-		.filter(p -> acceptedPackagesIds.contains(p.getId()))
-		.collect(toList()));
+		route.setPackages(acceptedPackages);
 		route.setDescription(inputDto.getDescription());
 		route.setTransport(transport);
 		route.setStartRoute(inputDto.getStartRoute());
@@ -68,6 +73,34 @@ public class PackagingOptimisationService {
       //  route.setEndRoute1(getLocalDateTime(inputDto.getEndRoute()));
 
 		return route;
+	}
+
+	private List<PackageDto> optimise(Packager packager, List<PackageDto> optimised, List<PackageDto> unknown) {
+
+		if(unknown.size() <= 1) {
+			return optimised;
+		}
+
+		List<PackageDto> toTest = newArrayList(optimised);
+		toTest.addAll(unknown);
+
+		while (packager.pack(getBoxes(toTest)) == null) {
+			toTest.remove(toTest.size() - 1);
+		}
+		if(toTest.equals(optimised)) {
+			return optimised;
+		}
+
+		unknown.removeAll(toTest);
+
+		return optimise(packager, toTest, reverse(newArrayList(unknown)));
+	}
+
+	private List<Box> getBoxes(List<PackageDto> packageDtos) {
+
+		return packageDtos.stream()
+			.map(PackageDto::getBox)
+			.collect(toList());
 	}
 
 	private static final Comparator<PackageDto> BOX_VOLUME_DESCENDING = (o1, o2) -> o2.getBox().getVolume() - o1.getBox().getVolume();

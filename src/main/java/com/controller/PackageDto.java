@@ -56,4 +56,27 @@ public class PackageDto {
 
 		this.accepted = false;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		if (!super.equals(o))
+			return false;
+
+		PackageDto that = (PackageDto) o;
+
+		return packageId != null ? packageId.equals(that.packageId) : that.packageId == null;
+	}
+
+	@Override
+	public int hashCode() {
+
+		int result = super.hashCode();
+		result = 31 * result + (packageId != null ? packageId.hashCode() : 0);
+		return result;
+	}
 }

@@ -1,8 +1,6 @@
 package com.dataInitiation;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
@@ -72,7 +70,7 @@ public class Data implements ApplicationListener<ContextRefreshedEvent> {
         user3.setLastName("Motyka");
         user3.setAddress("Graniczna 25");
         user3.setTelephoneNumber("700880774");
-        user3.setFirmName("Cwel Comapny");
+        user3.setFirmName("Nazwa firmy");
         userRepository.save(user3);
 
         Warehouse warehouse = new Warehouse();
@@ -94,72 +92,117 @@ public class Data implements ApplicationListener<ContextRefreshedEvent> {
         warehouseRepository.save(warehouse2);
 
         Package pack = new Package();
-        pack.setName("Koła Audi");
+        pack.setName("Paczka 2x2x1");
         pack.setCapacity(20.0);
         pack.setDescription("Kolo jest okrągłe");
         pack.setWeight(29.0);
         pack.setUser(user);
-        pack.setxDimension(0.4);
-        pack.setyDimension(0.4);
-        pack.setzDimension(0.4);
+        pack.setxDimension(2.0);
+        pack.setyDimension(2.0);
+        pack.setzDimension(1.0);
         pack.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
         pack.setWarehouse(warehouse);
         packageRepository.save(pack);
 
 		Package pack2 = new Package();
-		pack2.setName("test test ");
-		pack2.setCapacity(20.0);
+		pack2.setName("Paczka 2x1x1");
+		pack2.setCapacity(1.0);
 		pack2.setDescription("Kolo jest okrągłe");
 		pack2.setWeight(29.0);
 		pack2.setUser(user);
-		pack2.setxDimension(0.4);
-		pack2.setyDimension(0.4);
-		pack2.setzDimension(0.4);
+		pack2.setxDimension(2.0);
+		pack2.setyDimension(1.0);
+		pack2.setzDimension(1.0);
 		pack2.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
 		pack2.setWarehouse(warehouse);
 		packageRepository.save(pack2);
 
-        Package pack3 = new Package();
-        pack3.setName("test test ");
-        pack3.setCapacity(20.0);
-        pack3.setDescription("Kolo jest okrągłe");
-        pack3.setWeight(29.0);
-        pack3.setUser(user);
-        pack3.setxDimension(0.4);
-        pack3.setyDimension(0.4);
-        pack3.setzDimension(0.4);
-        pack3.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
-        pack3.setWarehouse(warehouse);
-        packageRepository.save(pack3);
+		Package pack3 = new Package();
+		pack3.setName("Paczka 1x1x1");
+		pack3.setCapacity(1.0);
+		pack3.setDescription("Kolo jest okrągłe");
+		pack3.setWeight(29.0);
+		pack3.setUser(user);
+		pack3.setxDimension(1.0);
+		pack3.setyDimension(1.0);
+		pack3.setzDimension(1.0);
+		pack3.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+		pack3.setWarehouse(warehouse);
+		packageRepository.save(pack3);
 
         Package pack4 = new Package();
-        pack4.setName("test test ");
-        pack4.setCapacity(20.0);
+        pack4.setName("Paczka 1x1x1");
+        pack4.setCapacity(1.0);
         pack4.setDescription("Kolo jest okrągłe");
         pack4.setWeight(29.0);
         pack4.setUser(user);
-        pack4.setxDimension(0.4);
-        pack4.setyDimension(0.4);
-        pack4.setzDimension(0.4);
+        pack4.setxDimension(1.0);
+        pack4.setyDimension(1.0);
+        pack4.setzDimension(1.0);
         pack4.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
         pack4.setWarehouse(warehouse);
         packageRepository.save(pack4);
 
-       Transport transport = new Transport();
-       transport.setTransportName("Transport nazwa");
-       transport.setxDimension(12.0);
-       transport.setyDimension(12.0);
-       transport.setzDimension(12.0);
+		Package pack5 = new Package();
+		pack5.setName("Paczka 2x1x1");
+		pack5.setCapacity(1.0);
+		pack5.setDescription("Kolo jest okrągłe");
+		pack5.setWeight(29.0);
+		pack5.setUser(user);
+		pack5.setxDimension(2.0);
+		pack5.setyDimension(1.0);
+		pack5.setzDimension(1.0);
+		pack5.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+		pack5.setWarehouse(warehouse);
+		packageRepository.save(pack5);
+
+		Package pack6 = new Package();
+		pack6.setName("Paczka 2x2x2");
+		pack6.setCapacity(1.0);
+		pack6.setDescription("Kolo jest okrągłe");
+		pack6.setWeight(29.0);
+		pack6.setUser(user);
+		pack6.setxDimension(2.0);
+		pack6.setyDimension(2.0);
+		pack6.setzDimension(2.0);
+		pack6.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+		pack6.setWarehouse(warehouse);
+		packageRepository.save(pack6);
+
+		Transport transport = new Transport();
+       transport.setTransportName("Transport 4x1x1");
+       transport.setxDimension(4.0);
+       transport.setyDimension(1.0);
+       transport.setzDimension(1.0);
        transport.setDriverFirstName("Blazej");
        transport.setDriverLastName("Rejnowski");
        transport.setDriverTelephoneName("Rejnowski");
        transport.setMaxCapacity(12300.0);
-       transport.setxDimension(100d);
-       transport.setyDimension(100d);
-       transport.setzDimension(100d);
        transport.setMaxWeight(100.0);
        transportRepository.save(transport);
 
+		Transport transport2 = new Transport();
+		transport2.setTransportName("Transport 2x2x1");
+		transport2.setxDimension(2.0);
+		transport2.setyDimension(2.0);
+		transport2.setzDimension(1.0);
+		transport2.setDriverFirstName("Blazej");
+		transport2.setDriverLastName("Rejnowski");
+		transport2.setDriverTelephoneName("Rejnowski");
+		transport2.setMaxCapacity(12300.0);
+		transport2.setMaxWeight(100.0);
+		transportRepository.save(transport2);
 
+		Transport transport3 = new Transport();
+		transport3.setTransportName("Transport 3x2x2");
+		transport3.setxDimension(3.0);
+		transport3.setyDimension(2.0);
+		transport3.setzDimension(2.0);
+		transport3.setDriverFirstName("Blazej");
+		transport3.setDriverLastName("Rejnowski");
+		transport3.setDriverTelephoneName("Rejnowski");
+		transport3.setMaxCapacity(12300.0);
+		transport3.setMaxWeight(100.0);
+		transportRepository.save(transport3);
     }
 }

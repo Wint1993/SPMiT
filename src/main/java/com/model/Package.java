@@ -14,15 +14,17 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "Package")
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Package {
 
     @Id
@@ -163,4 +165,30 @@ public class Package {
     public void setTimeString(String timeString) {
         this.timeString = timeString;
     }
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Package aPackage = (Package) o;
+
+		if (xDimension != null ? !xDimension.equals(aPackage.xDimension) : aPackage.xDimension != null)
+			return false;
+		if (yDimension != null ? !yDimension.equals(aPackage.yDimension) : aPackage.yDimension != null)
+			return false;
+		return zDimension != null ? zDimension.equals(aPackage.zDimension) : aPackage.zDimension == null;
+	}
+
+	@Override
+	public int hashCode() {
+
+		int result = xDimension != null ? xDimension.hashCode() : 0;
+		result = 31 * result + (yDimension != null ? yDimension.hashCode() : 0);
+		result = 31 * result + (zDimension != null ? zDimension.hashCode() : 0);
+		return result;
+	}
 }
