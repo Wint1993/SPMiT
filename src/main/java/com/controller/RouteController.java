@@ -36,11 +36,10 @@ public class RouteController {
 	private PackagingOptimisationService packagingOptimisationService;
 
     @RequestMapping(value = "/create")
-    public ResponseEntity<Route> create(@RequestBody Route route){
+    public ResponseEntity<List<Route>> create(@RequestBody Route route){
 
         warehousesEqualsValidation(route);
-        routeService.create(route);
-        return new ResponseEntity<Route>(route, HttpStatus.OK);
+        return routeService.create(route);
     }
 
     @RequestMapping(value = "/all", method = GET)

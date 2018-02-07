@@ -12,7 +12,7 @@ public interface RouteService {
 
     public List<Route> findAll();
     void remove(Route route);
-    ResponseEntity<Route> create(Route route);
+    ResponseEntity<List<Route>> create(Route route);
 
     void updateRoute(Route currentRoute);
 }

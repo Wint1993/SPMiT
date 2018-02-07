@@ -2,9 +2,9 @@ package com.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.repository.TransportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public ResponseEntity<Route> create(Route route){
+    public ResponseEntity<List<Route>> create(Route route){
 
         String start = changeDataStartViewFormat(route);
         route.setStartRoute(start);
@@ -47,14 +47,18 @@ public class RouteServiceImpl implements RouteService {
         LocalDateTime s1 = route.getStartRoute1();
         LocalDateTime s2 = route.getEndRoute1();
 
-        if(route.getPackages().isEmpty()){
-            return new ResponseEntity<>(route, HttpStatus.NOT_ACCEPTABLE);
-        }
+        List<Route> fakeList = new ArrayList<>();
+        List<Route> inputRoute = new ArrayList<>();
+        inputRoute.add(route);
 
-        if (ifStartDateIsAfterEndDate(s1, s2)) return new ResponseEntity<>(route, HttpStatus.NOT_ACCEPTABLE);
+        if (ifIsNoOnePackageInRoute(route))
+            return new ResponseEntity<>(inputRoute, HttpStatus.NOT_ACCEPTABLE);
 
-        ResponseEntity<Route> rout = transportTimeValidation1(route, s1, s2);
-        if (rout != null) return rout;
+        if (ifStartDateIsAfterEndDate(s1, s2))
+            return new ResponseEntity<>(inputRoute, HttpStatus.NOT_ACCEPTABLE);
+
+        if (ifCurrentTransportTimeCollidesWithEarlierOnes(route, fakeList))
+            return new ResponseEntity<>(fakeList, HttpStatus.NOT_ACCEPTABLE);
 
         routeRepository.save(route);
 		route.getPackages().forEach(p -> {
@@ -62,7 +66,7 @@ public class RouteServiceImpl implements RouteService {
 			packageRepository.save(p);
 		});
 
-        return new ResponseEntity<>(route, HttpStatus.OK);
+        return new ResponseEntity<>(inputRoute, HttpStatus.OK);
     }
 
     @Override
@@ -75,6 +79,32 @@ public class RouteServiceImpl implements RouteService {
         routeRepository.delete(route);
     }
 
+    private boolean ifCurrentTransportTimeCollidesWithEarlierOnes(Route route, List<Route> fakeList) {
+        LocalDateTime s1 = route.getStartRoute1();
+        LocalDateTime s2 = route.getEndRoute1();
+        List<Route> routes = routeRepository.findAllByTransportId(route.getTransport().getId());
+
+        for (Route rout:routes) {
+
+            LocalDateTime start1 = rout.getStartRoute1();
+            LocalDateTime end2 = rout.getEndRoute1();
+
+            if(!(s1.isAfter(end2) && s2.isAfter(end2) || s1.isBefore(start1) && s2.isBefore(start1))){
+                fakeList.add(rout);
+            }
+        }
+        if(!fakeList.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean ifIsNoOnePackageInRoute(Route route) {
+        if(route.getPackages().isEmpty())
+            return true;
+        return false;
+    }
+
     private boolean ifStartDateIsAfterEndDate(LocalDateTime s1, LocalDateTime s2) {
         if(s1.isAfter(s2)){
             return true;
@@ -82,31 +112,14 @@ public class RouteServiceImpl implements RouteService {
         return false;
     }
 
-    private ResponseEntity<Route> transportTimeValidation1(Route route, LocalDateTime s1, LocalDateTime s2) {
-        List<Route> routes = routeRepository.findAllByTransportId(route.getTransport().getId());
-        for (Route rout:routes) {
-
-            LocalDateTime start1 = rout.getStartRoute1();
-            LocalDateTime end2 = rout.getEndRoute1();
-
-            // nie zwraca odpowiedniego routa- tzn tego który został zlapany przez pętle !
-            if(!(s1.isAfter(end2) && s2.isAfter(end2) || s1.isBefore(start1) && s2.isBefore(start1))){
-                return new ResponseEntity<Route>(rout, HttpStatus.NOT_ACCEPTABLE);
-            }
-        }
-        return null;
-    }
-
-
-    public String changeDataStartViewFormat(Route route){
+    private String changeDataStartViewFormat(Route route){
         String inputDateStart = route.getStartRoute();
         String datePart1Start = inputDateStart.substring(0,10);
         String datePart2Start = inputDateStart.substring(11,19);
         return datePart1Start + " " + datePart2Start;
-
     }
 
-    public String changeDataEndViewFormat(Route route){
+    private String changeDataEndViewFormat(Route route){
         String inputDateEnd = route.getEndRoute();
         String datePart1End = inputDateEnd.substring(0,10);
         String datePart2End = inputDateEnd.substring(11,19);
