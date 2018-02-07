@@ -1,18 +1,18 @@
 package com.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -43,13 +43,14 @@ public class Transport {
 
     private Double zDimension;
 
-    @OneToOne
+  /*  @OneToOne
     @JsonIgnore
-    private Route route;
+    private Route route;*/
 
-    //@ManyToOne
-   // @JsonIgnore
-  //  private Warehouse currentWarehouse;
+
+    @OneToMany(mappedBy = "transport")
+    @JsonIgnore
+    private List<Route> routeList = new ArrayList<>();
 
     public String getDriverFirstName() {
         return driverFirstName;
@@ -131,19 +132,11 @@ public class Transport {
         this.zDimension = zDimension;
     }
 
-    public Route getRoute() {
-        return route;
+    public List<Route> getRouteList() {
+        return routeList;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
+    public void setRouteList(List<Route> routeList) {
+        this.routeList = routeList;
     }
-
-   // public Warehouse getCurrentWarehouse() {
-   //     return currentWarehouse;
-  //  }
-
-   // public void setCurrentWarehouse(Warehouse currentWarehouse) {
-      //  this.currentWarehouse = currentWarehouse;
-   // }
 }

@@ -1,12 +1,15 @@
 package com.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.model.Package;
 import com.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,15 +35,19 @@ public class RouteController {
     @Autowired
 	private PackagingOptimisationService packagingOptimisationService;
 
-    @RequestMapping(value = "/create", method = POST)
-    public Route create(@RequestBody Route route){
-        return routeService.create(route);
+    @RequestMapping(value = "/create")
+    public ResponseEntity<Route> create(@RequestBody Route route){
+
+        warehousesEqualsValidation(route);
+        routeService.create(route);
+        return new ResponseEntity<Route>(route, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/all", method = GET)
     public List<Route> findAll(){
         return routeService.findAll();
     }
+
 
     @RequestMapping(value = "/remove/{id}", method = DELETE)
     public Route remove(@PathVariable long id){
@@ -68,6 +75,9 @@ public class RouteController {
         currentRoute.setEndRoute(route.getEndRoute());
         currentRoute.setTransport(route.getTransport());
         currentRoute.setPackages(route.getPackages());
+
+
+
         routeService.updateRoute(currentRoute);
 
         return new ResponseEntity<Route>(currentRoute, HttpStatus.OK);
@@ -82,5 +92,12 @@ public class RouteController {
     @RequestMapping(value = "/all/{id}", method = GET)
     public List<Package> findAllIn(@PathVariable("id") Long id){
         return packageRepository.findAllByRouteId(id);
+    }
+
+    public ResponseEntity<Route> warehousesEqualsValidation( Route route) {
+        if(route.getWarehouseStart().getId().equals(route.getWarehouseEnd().getId())) {
+            return new ResponseEntity<>(route, HttpStatus.NOT_ACCEPTABLE);
+        }
+        return null;
     }
 }

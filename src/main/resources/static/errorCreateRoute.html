@@ -1,0 +1,66 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+</head>
+
+<style>
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+    }
+</style>
+
+
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a ng-href="/#!/route">Route</a></li>
+        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a href="/#!/user">Users</a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+<div class="col-xs-8">
+
+
+    <h4>Cant create route:</h4>
+    <ol>
+        <li>Warehouse start and warehouse end are this same</li>
+        <li>No packages</li>
+        <li>No time input</li>
+    </ol>
+
+
+</div>

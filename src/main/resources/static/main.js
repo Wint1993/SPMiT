@@ -96,6 +96,10 @@ spmit.config(function ($routeProvider) {
             {
                 templateUrl: 'homePage.html'
             })
+        .when('/errorCreateRoute',
+            {
+                templateUrl: 'errorCreateRoute.html'
+            })
         .otherwise({redirectTo: '/home'});
 });
 
@@ -428,8 +432,8 @@ spmit.controller('RouteController', function ($scope, $mdDialog, $window, $http,
             "warehouseEnd": $scope.credentials.warehouseEnd,
             "description": $scope.credentials.description,
             "packages": $scope.selectedPackages,
-            "startRoute": $scope.credentials.dateTime,
-            "endRoute": $scope.credentials.dateTime1
+            "startRoute": $scope.credentials.startRoute,
+            "endRoute": $scope.credentials.endRoute
         };
         dataService.dataObj = $scope.solution;
         $location.path('/routeOptymalize');
@@ -453,6 +457,8 @@ spmit.controller('RouteController', function ($scope, $mdDialog, $window, $http,
                      console.log(request);
                 },
                 function errorCallback(response) {
+                    $location.path('/errorCreateRoute');
+
                 });
 
         $scope.credentials = {};
