@@ -8,6 +8,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.model.User;
+import com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,9 @@ public class PackageController {
 
     @Autowired
     private PackageRepository packageRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired private WarehouseService warehouseService;
 
@@ -93,4 +98,10 @@ public class PackageController {
 
     	return packageRepository.findOne(id);
 	}
+
+    @RequestMapping(value = "/info/{id}", method = GET)
+    public User userInfo(@PathVariable long id){
+
+        return userRepository.findOneById(packageRepository.findOneById(id).getUser().getId());
+    }
 }

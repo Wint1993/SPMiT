@@ -49,10 +49,14 @@
         <li><a ng-href="/#!/transport">Transport</a></li>
         <li><a href="/#!/warehouse">Warehouses</a></li>
         <li><a href="/#!/user">Users</a></li>
-        <li><a class="active" ng-href="/#!/package">Pack </a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
     </ul>
 </div>
 <div class="col-xs-8">
+
+
+    <h4>Error: Can't create route because transport time provided by you collide with: </h4>
+
 
     <form class="form-inline">
         <div class="form-group">
@@ -60,57 +64,54 @@
             <input type="text" ng-model="search" class="form-control" placeholder="Search">
         </div>
     </form>
-
     <p></p>
+
     <table class="table table-condensed table-bordered table-striped">
         <thead>
         <tr>
-            <th ng-click="sort('name')">Name <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
-                <span class="glyphicon sort-icon" ng-show="sortBy=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('warehouseStart.name')">Route start <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='warehouseStart.name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort1('user.firstName')">Owner <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
-                <span class="glyphicon sort-icon" ng-show="sortBy=='user.firstName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th ng-click="sort('warehouseEnd.name')">Route end <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='warehouseEnd.name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th ng-click="sort('user.description')">Description <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+            <th ng-click="sort('transport.transportName')">Transport <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
+                <span class="glyphicon sort-icon" ng-show="sortBy=='transport.transportName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('description')">Description<img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
                 <span class="glyphicon sort-icon" ng-show="sortBy=='description'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-            <th>Capacity
-                <span class="glyphicon sort-icon" ng-show="sortBy=='description'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th >Data start
             </th>
-            <th ng-click="sort('warehouse.name')">Warehouse <img  src="picture/sort1600.png" alt="Lupa" style="width:20px;height:20px;">
-                <span class="glyphicon sort-icon" ng-show="sortBy=='warehouse.name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            <th >Data end
             </th>
-            <th title="'Action buttons'" >Action buttons
 
-            </th>
         </tr>
         </thead>
         <tbody>
-        <tr dir-paginate="pack in package|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage">
-            <td title="'Package name'"  >
-                {{pack.name}}</td>
-            <td title="'Owner'">
-                {{pack.user.firstName}} {{pack.user.lastName}}   </td>
+        <tr dir-paginate="route in routes|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize" current-page="currentPage">
+            <td title="'Route start'" >
+                {{route.warehouseStart.name}}</td>
+            <td title="'Route end'" >
+                {{route.warehouseEnd.name}}    </td>
+            <td title="'Transport'" >
+                {{route.transport.transportName}}    </td>
             <td title="'Description'" >
-                {{pack.description}}</td>
-            <td title="'Capacity'" >
-                {{pack.capacity}}</td>
-            <td title="'Warehouse'" >
-                {{pack.warehouse.name}}</td>
-            <td title="'Action buttons'" >
-                <a ng-click="edit(pack)" class="btn btn-primary btn-sm">Edit</a>
-                <a ng-click="deletePack(pack)" class="btn btn-danger btn-sm">Delete</a>
-                <a ng-click="owner(pack)" class="btn btn-success btn-sm">Show owner info</a>
-            </td>
+                {{route.description}}    </td>
+            <td title="'Data start'" >
+                {{route.startRoute}}    </td>
+            <td title="'Data end'" >
+                {{route.endRoute}}    </td>
 
         </tr>
+
         </tbody>
+
     </table>
 
-
-
+    <p></p>
     <div >
-        <label for="search">Packages per page:</label>
+        <label for="search">Routes per page:</label>
         <!--<input type="number" min="1" step="10" max="50" class="form-control" ng-model="pageSize"> -->
 
         <select ng-model="pageSize">
@@ -128,10 +129,5 @@
             boundary-links="true" >
     </dir-pagination-controls>
 
-    <div class = "panel panel-default">
 
-     <!--   <a href="#" class="btn btn-default" ng-click="open('lg')"> Add package</a></div> -->
-    <a ng-href="/#!/addPackage" class="btn btn-default">Add package</a>
-
-</div>
 </div>

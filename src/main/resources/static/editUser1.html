@@ -1,0 +1,90 @@
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+</head>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+    }
+
+    li a {
+        display: block;
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #555;
+        color: white;
+    }
+</style>
+
+
+<div class="col-xs-2">
+    <ul >
+        <li><a ng-href="/#!/home">Home</a></li>
+        <li><a ng-href="/#!/routes">Route</a></li>
+        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a href="/#!/warehouse">Warehouses</a></li>
+        <li><a class="active" href="/#!/user">Users</a></li>
+        <li><a ng-href="/#!/package">Pack </a></li>
+    </ul>
+</div>
+<div class="col-xs-8">
+
+    <p> </p>
+    <p> </p>
+    <p> </p>
+
+    <label> First Name:</label>
+    <input type="text" placeholder="Enter user first name" required autofocus ng-model="editUser.firstName">
+    <p> </p>
+
+    <label> Last Name:</label>
+    <input type="text" placeholder="Enter user last name" required autofocus ng-model="editUser.lastName">
+    <p> </p>
+
+    <label> Address:</label>
+    <input type="text" placeholder="Enter user address" required autofocus ng-model="editUser.address">
+    <p> </p>
+
+    <label> TelephoneNumber:</label>
+    <input type="text" placeholder="Enter user telephone number" required autofocus ng-model="editUser.telephoneNumber">
+    <p> </p>
+
+    <label> Email:</label>
+    <input type="email" placeholder="Enter user email" required autofocus ng-model="editUser.email">
+    <p> </p>
+
+    <label> Firm:</label>
+    <input type="text" placeholder="Enter user firm name" required autofocus ng-model="editUser.firmName">
+    <p> </p>
+
+    <div class = "panel panel-default">
+        <a href="#" class="btn btn-success" ng-click="save(editUser)">Save</a>
+        <a href="#" class="btn btn-warning" ng-click="cancel()">Cancel</a></div>
+
+
+</div>
+
