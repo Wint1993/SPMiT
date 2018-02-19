@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
             for (Package pack: packageRepository.findAllByUser(user)) {
                 packageRepository.delete(pack);
                 packageRepository.flush();
-                userRepository.delete(user);
             }
+            userRepository.delete(user);
         }
     }
 

@@ -6,11 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -19,7 +16,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,7 +40,6 @@ public class Route  {
 
     private LocalDateTime startRoute1;
 
-   // @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime endRoute1;
 
 
@@ -52,11 +47,13 @@ public class Route  {
     @ManyToOne
     private Transport transport;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(fetch = FetchType.EAGER,targetEntity = Package.class ,mappedBy = "route")
     private List<Package> packages = new ArrayList<>();
 
     @JsonIgnore
     private boolean isArrived = false;
+
+    private String arrivedStatus = "Not arrived";
 
     public Long getId() {
         return id;
@@ -144,5 +141,13 @@ public class Route  {
 
     public void setEndRoute1(LocalDateTime endRoute1) {
         this.endRoute1 = endRoute1;
+    }
+
+    public String getArrivedStatus() {
+        return arrivedStatus;
+    }
+
+    public void setArrivedStatus(String arrivedStatus) {
+        this.arrivedStatus = arrivedStatus;
     }
 }

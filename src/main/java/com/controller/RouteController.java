@@ -88,6 +88,12 @@ public class RouteController {
         return routeRepository.findOne(id);
     }
 
+    @RequestMapping(value = "/arrived/{id}", method = POST)
+    public void changeStatusOnArrived(@PathVariable Long id) {
+
+        routeService.changeRouteStatus(id);
+    }
+
     @RequestMapping(value = "/all/{id}", method = GET)
     public List<Package> findAllIn(@PathVariable("id") Long id){
         return packageRepository.findAllByRouteId(id);

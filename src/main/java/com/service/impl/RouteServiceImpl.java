@@ -57,8 +57,9 @@ public class RouteServiceImpl implements RouteService {
         if (ifStartDateIsAfterEndDate(s1, s2))
             return new ResponseEntity<>(inputRoute, HttpStatus.NOT_ACCEPTABLE);
 
-        if (ifCurrentTransportTimeCollidesWithEarlierOnes(route, fakeList))
+        if (ifCurrentTransportTimeCollidesWithAnotherOnes(route, fakeList))
             return new ResponseEntity<>(fakeList, HttpStatus.NOT_ACCEPTABLE);
+
 
         routeRepository.save(route);
 		route.getPackages().forEach(p -> {
@@ -67,6 +68,21 @@ public class RouteServiceImpl implements RouteService {
 		});
 
         return new ResponseEntity<>(inputRoute, HttpStatus.OK);
+    }
+
+    @Override
+    public void changeRouteStatus(Long id) {
+        Route route = routeRepository.findOneById(id);
+        if(route.isArrived()){
+            route.setArrived(false);
+            route.setArrivedStatus("Not arrived");
+            updateRoute(route);
+        }
+        else {
+            route.setArrived(true);
+            route.setArrivedStatus("Arrived");
+            updateRoute(route);
+        }
     }
 
     @Override
@@ -79,7 +95,9 @@ public class RouteServiceImpl implements RouteService {
         routeRepository.delete(route);
     }
 
-    private boolean ifCurrentTransportTimeCollidesWithEarlierOnes(Route route, List<Route> fakeList) {
+
+
+    private boolean ifCurrentTransportTimeCollidesWithAnotherOnes(Route route, List<Route> fakeList) {
         LocalDateTime s1 = route.getStartRoute1();
         LocalDateTime s2 = route.getEndRoute1();
         List<Route> routes = routeRepository.findAllByTransportId(route.getTransport().getId());

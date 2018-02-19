@@ -2,29 +2,21 @@ package com.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 
 
 @Entity
-@Getter
-@Setter
 @Table(name = "Package")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude="route")
 public class Package {
 
     @Id
@@ -50,7 +42,6 @@ public class Package {
     @JsonIgnore
     private String timeString;
 
-
     @OneToOne
     private User user;
 
@@ -58,7 +49,7 @@ public class Package {
 	@JsonIdentityReference()
     private Warehouse warehouse;
 
-    @ManyToOne
+    @ManyToOne//(fetch = FetchType.EAGER)//(cascade={CascadeType.ALL})
     @JsonIgnore
     private Route route;
 

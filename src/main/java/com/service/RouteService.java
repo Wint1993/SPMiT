@@ -10,9 +10,9 @@ import com.model.Route;
 @Service
 public interface RouteService {
 
-    public List<Route> findAll();
+    List<Route> findAll();
     void remove(Route route);
     ResponseEntity<List<Route>> create(Route route);
-
+    void changeRouteStatus(Long id);
     void updateRoute(Route currentRoute);
 }

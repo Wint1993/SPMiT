@@ -32,6 +32,11 @@ spmit.config(function ($routeProvider) {
                 controller: 'TransportController',
                 templateUrl: 'transport.html'
             })
+        .when('/transport/:id',
+            {
+                controller: 'TransportController',
+                templateUrl: 'transportInfo.html'
+            })
         .when('/addWarehouse',
             {
                 controller: 'WarehouseController',
@@ -87,6 +92,12 @@ spmit.config(function ($routeProvider) {
                 controller: 'TransportEditController',
                 templateUrl: 'editTransport.html'
             })
+        .when('/editTransport1/:id',
+            {
+                controller: 'TransportEditController',
+                templateUrl: 'editTransport1.html'
+            })
+
         .when('/packageInWarehouse/:id',
             {
                 controller: 'packageInWarehouseController',
@@ -126,8 +137,10 @@ spmit.config(function ($routeProvider) {
 });
 
 
-spmit.controller('TransportEditController', function ($scope, $http, $location, $routeParams) {
+spmit.controller('TransportEditController', function (dataService, $scope, $http, $location, $routeParams) {
+
     $scope.editTransport = {};
+
     $http({
         method : 'GET',
         url : '/api/transport/'+$routeParams.id
@@ -151,10 +164,26 @@ spmit.controller('TransportEditController', function ($scope, $http, $location, 
                 function errorCallback(response) {
                 });
     };
+
+    $scope.transportInfo = function(transport) {
+        $http({
+            method : 'GET',
+            url : '/api/transport/'+transport['id']
+        }).then(function successCallback(response){
+                dataService.dataObj = response.data;
+                $location.path('/transport/'+transport['id']);
+
+            },
+            function errorCallback(response) {
+            });
+    };
+
 });
 
 
-spmit.controller('TransportController', function ($scope, $window, $http,NgTableParams,$modal, $log, $location) {
+spmit.controller('TransportController', function ($scope,dataService, $window, $http,NgTableParams,$modal, $log, $location) {
+    $scope.loadedTransportInfo = dataService.dataObj;
+
     $scope.currentPage = 1;
     $scope.pageSize = {
         "1":"1", "2":"2", "10":"10","25":"25","50":"50"
@@ -190,6 +219,11 @@ spmit.controller('TransportController', function ($scope, $window, $http,NgTable
     $scope.edit = function(transport) {
         $location.path("/editTransport/"+transport['id']);
     };
+
+    $scope.edit1 = function(transport) {
+        $location.path("/editTransport1/"+transport['id']);
+    };
+
     $scope.deleteTransport = function(transport) {
         console.log(transport);
 
@@ -200,6 +234,20 @@ spmit.controller('TransportController', function ($scope, $window, $http,NgTable
                 $location.path('/transport');
                 $window.location.reload();
                 vm.usersTable.reload();
+            },
+            function errorCallback(response) {
+            });
+    };
+
+    $scope.transportInfo = function(transport) {
+        $http({
+            method : 'GET',
+            url : '/api/transport/'+transport['id']
+        }).then(function successCallback(response){
+                dataService.dataObj = response.data;
+            //  console.log( $scope.loadedTransportInfo);
+               $location.path('/transport/'+transport['id']);
+
             },
             function errorCallback(response) {
             });
@@ -374,11 +422,6 @@ spmit.controller('RouteController', function ($scope, $mdDialog, $window, $http,
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
     };
-    $http
-        .get('/api/warehouse/all')
-        .then(function (response) {
-            $scope.transfer = response.data;
-        });
 
     $http
         .get('/api/warehouse/all')
@@ -438,6 +481,23 @@ spmit.controller('RouteController', function ($scope, $mdDialog, $window, $http,
 
     $scope.edit = function(route) {
         $location.path("/editRoute/"+route['id']);
+    };
+
+    $scope.isArrived = function(route) {
+        var request = {
+            method: 'POST',
+            url: '/api/route/arrived/' + route['id']
+        };
+        $http(request)
+            .then(function successCallback(response){
+                    $window.location.reload();
+                   // $location.path('/route');
+                    //console.log(request);
+                },
+                function errorCallback(response) {
+                    $location.path('/errorCreateRoute');
+
+                });
     };
 
     $scope.save = function () {
@@ -594,18 +654,20 @@ spmit.controller('UserController', function ($scope,$q, $window, $http,NgTablePa
     };
 
     $scope.deleteUser = function(user) {
-        console.log(user);
+        var r = confirm("Want you to delete this record: " +user['firstName']+" "+user['lastName'] + " ?" );
+        if(r) {
 
-        $http({
-            method : 'DELETE',
-            url : '/api/user/remove/'+user['id']
-        }).then(function successCallback(response){
-                $location.path('/user');
-                $window.location.reload();
-                vm.usersTable.reload();
-            },
-            function errorCallback(response) {
-            });
+            $http({
+                method: 'DELETE',
+                url: '/api/user/remove/' + user['id']
+            }).then(function successCallback(response) {
+                    $location.path('/user');
+                    $window.location.reload();
+                    vm.usersTable.reload();
+                },
+                function errorCallback(response) {
+                });
+        }
     };
 
     $scope.edit = function(user) {

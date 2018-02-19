@@ -45,11 +45,6 @@ public class Transport {
 
     private Double zDimension;
 
-  /*  @OneToOne
-    @JsonIgnore
-    private Route route;*/
-
-
     @OneToMany(mappedBy = "transport")
     @JsonIgnore
     private List<Route> routeList = new ArrayList<>();

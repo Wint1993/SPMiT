@@ -51,6 +51,7 @@ public class PackageServiceImpl implements PackageService{
         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         //LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
        // pack.setWhenTake(dateTime);
+        pack.setRoute(null);
         pack.setWarehouse(warehouseRepository.findOneById(pack.getWarehouse().getId()));
         pack.setCapacity(pack.getxDimension()*pack.getzDimension()*pack.getyDimension());
         pack.setTimeString(LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));

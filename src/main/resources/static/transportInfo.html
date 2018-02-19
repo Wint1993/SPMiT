@@ -7,8 +7,6 @@
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
     <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
     <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-
 </head>
 
 <style>
@@ -47,44 +45,45 @@
     <ul >
         <li><a ng-href="/#!/home">Home</a></li>
         <li><a ng-href="/#!/route">Route</a></li>
-        <li><a ng-href="/#!/transport">Transport</a></li>
+        <li><a class="active" ng-href="/#!/transport">Transport</a></li>
         <li><a href="/#!/warehouse">Warehouses</a></li>
-        <li><a class="active" href="/#!/user">Users</a></li>
+        <li><a href="/#!/user">Users</a></li>
         <li><a ng-href="/#!/package">Pack </a></li>
     </ul>
 </div>
 <div class="col-xs-8">
 
-    <p></p>
+    <p> </p>
+    <p> </p>
+    <p> </p>
 
-        <tbody>
-        <div class = "panel panel-default">
-
-        <label> First Name: {{user.firstName}}</label>
+    <div class = "panel panel-default">
+    <label> Transport Name:</label> {{loadedTransportInfo.transportName}}
+    <p> </p>
+    <label> Driver Name:</label> {{loadedTransportInfo.driverFirstName}} {{loadedTransportInfo.driverLastName}}
+    <p> </p>
+    <label> Driver telephone number:</label> {{loadedTransportInfo.driverTelephoneName}}
+    <p> </p>
+    <label> Transport max weight:</label> {{loadedTransportInfo.maxWeight}}
+    <p> </p>
+    <label> Transport max capacity:</label> {{loadedTransportInfo.maxCapacity}}
+    <p> </p>
+    <label> Transport width dimension:</label> {{loadedTransportInfo.xDimension}}
+    <p> </p>
+    <label> Transport length dimension:</label> {{loadedTransportInfo.yDimension}}
+    <p> </p>
+    <label> Transport height dimension:</label> {{loadedTransportInfo.zDimension}}
+    <p> </p>
         <p></p>
+        <a ng-click="edit1(loadedTransportInfo)" class="btn btn-primary btn-sm">Edit</a>
+        <a ng-href="/#!/transport" class="btn btn-warning btn-sm">Back</a>
 
-        <label> Last Name: {{user.lastName}}</label>
-        <p></p>
-
-        <label> Address: {{user.address}}</label>
-        <p></p>
-
-        <label> TelephoneNumber: {{user.telephoneNumber}} </label>
-        <p></p>
-
-        <label> Email: {{user.email}}</label>
-        <p></p>
-
-        <label> Firm: {{user.firmName}}</label>
-        <p></p>
-            <a ng-click="edit(user)" class="btn btn-primary btn-sm">Edit</a>
-            <a ng-href="/#!/package" class="btn btn-warning btn-sm">Back</a>
-
-        </div>
-        </tbody>
-
+    </div>
 
 </div>
 
-
-
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

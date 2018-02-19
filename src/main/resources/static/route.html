@@ -81,6 +81,8 @@
             </th>
             <th >Data end
             </th>
+            <th >Arrived Status
+            </th>
             <th title="'Action buttons'" >Action buttons
             </th>
         </tr>
@@ -99,10 +101,13 @@
                 {{route.startRoute}}    </td>
             <td title="'Data end'" >
                 {{route.endRoute}}    </td>
+            <td title="'Arrived'" >
+                {{route.arrivedStatus}}    </td>
             <td title="'Action buttons'" >
                 <a ng-click="edit(route)" class="btn btn-primary btn-sm">Edit</a>
                 <a ng-click="deleteRoute(route)" class="btn btn-danger btn-sm">Delete</a>
                 <a ng-click="showPackages(route)" class="btn btn-warning btn-sm">Show packages</a>
+                <a ng-click="isArrived(route)" class="btn btn-success btn-sm">Change status</a>
             </td>
         </tr>
 
